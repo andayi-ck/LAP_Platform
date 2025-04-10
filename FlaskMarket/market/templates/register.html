@@ -1,0 +1,101 @@
+
+
+
+
+
+
+{% extends 'base.html' %}
+
+<!-- block title below contains info. that is going to be displayed as our
+        tab names -->
+{% block title %}
+    Register Page
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        body{
+            background-color:rgb(236, 243, 255);
+        }
+        .floating-window{
+            padding: 20px;
+            width: 500px;
+            height: 680px;
+            background-color:rgb(23, 58, 55); /* White background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6); /* Shadow effect */
+            position: absolute; /* Floating */
+            top: 80px; /* Center vertically */
+            left: 400px; /* Center horizontally */
+            z-index: -5;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .floating-window:hover {
+            transform: translateY(-1px);
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .form-control {
+            border: none; /* Removes the border */
+            outline: none; /* Prevents outline on focus */
+            background-color:rgba(245, 245, 253, 0.94); /* Optional: Makes the background transparent */
+            box-shadow: none; /* Ensures no box-shadow appears */
+        }
+    </style>
+
+
+<!-- Here we are going to contain the Form. -->
+<body class="text-center">
+    <div class="floating-window">
+        <div class="container">
+            <!--The div class above allows us to containerize the username,email,
+            password1, password2 label so that they don't cover the whole screen from end to
+            end but only a small part of the screen as can be seen-->
+
+            <form method="POST" class="form-register" action="{{ url_for('register_page') }}" style="color:chocolate">
+                {{ form.hidden_tag() }}
+                <img class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestockW.png?width=271&height=50&name=livestockW.png">
+                <img class="rounded-circle img-thumbnail" src="data:image/png;base64,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"
+                style="width: 100px; height: 100px: border-radius: 50%; object-fit: cover; position: absolute; top: 140px; left: 214px;">
+                <!-- <img class="mb-4" src="https://res.cloudinary.com/jimshapedcoding/image/upload/v1597332609/android-icon-192x192_ove2a7.png" alt=""> -->
+                <h1 class="h3 mb-3 font-weight-normal">
+                    Create your Account:
+                </h1>
+                <br>
+
+                <div style="position: absolute; top: 240px; left: 50px; width: 400px;">
+                    <!--Below is how forms are created using Flask coding Language-->
+                    <!--Info contained in these labels can be changed at 'forms.py'-->
+                    {{ form.username.label() }}
+                    {{ form.username(class="form-control", placeholder="User Name") }}
+
+                    {{ form.email_address.label() }}
+                    {{ form.email_address(class="form-control", placeholder="Email Address") }}
+
+                    {{ form.password1.label() }}
+                    {{ form.password1(class="form-control", placeholder="Password") }}
+
+                    {{ form.password2.label() }}
+                    {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+
+                    <br>
+
+                    <div class="checkbox mb-3">
+                        <h6>Already have an account?</h6>
+                        <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">Login</a>
+                    </div>
+
+
+                    <div class="d-flex justify-content-center">
+                        {{ form.submit(class="btn btn-block btn-primary w-50") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+{% endblock %}
+
+
+

@@ -1,0 +1,75 @@
+
+
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(5px); /* Blurred effect */
+    z-index: 999; /* Below the floating window */
+}
+
+h2 {
+    color: #333;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label{
+    display: block;
+    margin-top: 10px;
+    color: red;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+input[type="date"], select {
+    padding: 10px 35px 8px 10px;
+    width: 100%;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: right;
+    
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    margin-top: 15px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    margin-top: 20px;
+    background: #d4edda;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Anchor tag styling */
+a {
+    display: block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

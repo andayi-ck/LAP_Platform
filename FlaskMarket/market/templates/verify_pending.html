@@ -1,0 +1,94 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Verify Your Email
+{% endblock %}
+
+{% block content %}
+    <style>
+
+        .navbar {
+            filter: blur(2px); /* Apply blur to navbar */
+            transition: filter 0.6s ease; /* Smooth transition */
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999; /* Below floating box, above navbar */
+        }
+
+        .floating-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color:rgb(240, 255, 255);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            z-index: 1000;
+        }
+        .floating-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .floating-box p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .floating-box a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .floating-box a:hover {
+            text-decoration: underline;
+        }
+        .disabled-link {
+            color: #999;
+            pointer-events: none;
+            text-decoration: none;
+        }
+        #timer {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+
+    <div class="overlay">
+        <div class="floating-box">
+            <h2>Email Verification Required</h2>
+            <p>We’ve sent a verification email to <strong>{{ email }}</strong>.</p>
+            <p>Please check your inbox (and spam/junk folder) and click the <strong>"Create Account"</strong> button to continue to the Livestock Management System.</p>
+            <p>Didn’t receive it? <a id="resend-link" class="disabled-link" href="{{ url_for('resend_verification', email=email) }}">Resend verification email</a></p>
+            <p>Resend available in <span id="timer">30</span> seconds.</p>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 30; // Set timer duration in seconds
+        const resendLink = document.getElementById('resend-link');
+        const timerDisplay = document.getElementById('timer');
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+            } else {
+                resendLink.classList.remove('disabled-link');
+                resendLink.style.color = '#4CAF50';
+                timerDisplay.parentElement.style.display = 'none'; // Hide timer when done
+            }
+        }
+
+        // Start the timer
+        setInterval(updateTimer, 1000);
+    </script>
+{% endblock %}

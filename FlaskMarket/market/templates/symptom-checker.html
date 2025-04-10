@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Symptom Checker
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: rgb(236, 243, 255);
+            font-family: 'Montserrat', sans-serif;
+        }
+        .symptom-checker-container {
+            padding: 40px;
+            width: 600px;
+            background-color: rgb(23, 58, 55);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .symptom-checker-container:hover {
+            transform: translate(-50%, -55%);
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+        }
+        .symptom-checker-container h1 {
+            color: chocolate;
+            text-align: center;
+        }
+        .symptom-checker-container label {
+            color: chocolate;
+        }
+        .symptom-checker-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+        }
+        .symptom-checker-container button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .symptom-checker-container button:hover {
+            background-color: #2980b9;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .result-box h3 {
+            color: chocolate;
+            margin-bottom: 10px;
+        }
+        .result-box p {
+            margin: 5px 0;
+        }
+    </style>
+
+    <div class="symptom-checker-container">
+        <h1>Symptom Checker</h1>
+        <form method="POST" action="{{ url_for('symptom_checker') }}">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.symptoms.label }}
+                {{ form.symptoms(placeholder="Enter symptoms (e.g., fever, cough)") }}
+            </div>
+            <div class="text-center">
+                {{ form.submit() }}
+            </div>
+        </form>
+
+        {% if result %}
+            <div class="result-box">
+                <h3>Diagnosis Result</h3>
+                <p><strong>Most Likely Illness:</strong> {{ result.illness }}</p>
+                <p><strong>Matched Symptoms:</strong> {{ result.matched_symptoms }} out of {{ result.total_symptoms }}</p>
+                <p><strong>Required Specialist:</strong> {{ result.required_specialist }}</p>
+                {% if recommended_vet %}
+                    <h3>Recommended Veterinary</h3>
+                    <p><strong>Name:</strong> {{ recommended_vet.name }}</p>
+                    <p><strong>Clinic:</strong> {{ recommended_vet.clinic }}</p>
+                    <p><strong>Availability:</strong> {{ recommended_vet.availability }}</p>
+                    <p><a href="{{ url_for('nearby_vets') }}" style="color: #3498db;">Book an Appointment</a></p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

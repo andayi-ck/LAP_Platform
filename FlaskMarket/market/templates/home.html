@@ -1,0 +1,1110 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %}
+    LIVESTOCK MANAGEMENT SYSTEM
+{% endblock %}
+{% block content %}
+
+
+
+
+
+    <style>
+        body {
+            #background-color:rgba(48, 101, 133, 0.8);
+            #background-image: url("https://cdn-icons-gif.flaticon.com/17904/17904089.gif");
+
+            background-image: url("https://www.woah.org/app/themes/woah/dist/images/newsletter-bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 1100px; /* Full viewport height */
+            width: 1100px;
+            top: 100px;
+            z-index: -1;
+            left: 50px;
+        }
+
+        .custom-hr {
+            position: absolute; /* Adjust position if needed */
+            top: 60px;         /* Distance from the top */
+            left: 380px;         /* Distance from the left */
+            width: 50%;         /* Length of the line */
+            height: 2px;        /* Thickness */
+            background-color:rgb(202, 169, 60); /* Change to any color */
+            border-radius: 10px; /* Makes the edges round */
+            border: none; /* Remove default border */
+        }
+
+        .vertical-line {
+            width: 2px;   /* Thickness of the vertical line */
+            height: 680px; /* Set the height of the vertical line */
+            background-color: rgb(202, 169, 60);
+            position: absolute;
+            top: 270px;   /* Aligns it to the end of the horizontal line */
+            left: 1160px; /* Moves it to the exact end of the horizontal line */
+            border-radius: 10px;
+        }
+        .custom-hr-hr {
+            position: absolute; /* Adjust position if needed */
+            top: 260px;         /* Distance from the top */
+            left: 260px;         /* Distance from the left */
+            width: 50%;         /* Length of the line */
+            height: 2px;        /* Thickness */
+            background-color:rgb(202, 169, 60); /* Change to any color */
+            border-radius: 10px; /* Makes the edges round */
+            border: none; /* Remove default border */
+        }
+        .white-floating-window {
+            width: 90%; /* Adjust the size */
+            height: 1000px;
+            padding: 20px;
+            background-color:rgba(255, 255, 255, 0.97); /* White background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6); /* Shadow effect */
+            position: absolute; /* Floating */
+            top: 70px; /* Center vertically */
+            left: 60px; /* Center horizontally */
+            z-index: 5;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .white-floating-window:hover {
+            transform: translateY(-1px);
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .animal-card {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 330px;
+            left: 260px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info {
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        /* Animal Name */
+        .animal-info h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+
+        //ANIMAL CARD 2
+        .card-container {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-2 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 330px;
+            left: 456px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-2 img {
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-2 {
+            padding: 15px;
+            
+        }
+
+        /* Animal Name */
+        .animal-info-2 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-2 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-2 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-2 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+
+        //ANIMAL CARD 3
+        .card-container-3 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-3 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 330px;
+            left: 660px;
+            position: absolute;
+        }
+        .image-container {
+            display: flex;
+            
+        }
+
+        .half-image {
+            width: 50%; /* Each image takes up half the container */
+            height: 150; /* Maintain aspect ratio */
+            object-fit: cover; /* Crop or scale to fit */
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-3:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-3 img {
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-3 {
+            padding: 15px;
+            
+        }
+
+        /* Animal Name */
+        .animal-info-3 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-3 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-3 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-3 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+        //ANIMAL CARD 4
+        .card-container-4 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-4 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 330px;
+            left: 860px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-4:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-4 img {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+            
+        }
+        /* Card Content */
+        .animal-info-4 {
+            top: 150px;
+            position: absolute;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* Animal Name */
+        .animal-info-4 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-4 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-4 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-4 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+        //ANIMAL CARD 5
+        .card-container-5 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-5 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 630px;
+            left: 860px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-5:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-5 img {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-5 {
+            top: 150px;
+            position: absolute;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* Animal Name */
+        .animal-info-5 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-5 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-5 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-5 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+        //ANIMAL CARD 6
+        .card-container-6 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-6 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 630px;
+            left: 260px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-6:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container-6 {
+            display: flex;
+            
+        }
+
+        .half-image-6 {
+            width: 50%; /* Each image takes up half the container */
+            height: 150; /* Maintain aspect ratio */
+            object-fit: cover; /* Crop or scale to fit */
+        }
+        /* Animal Image */
+        .animal-card-6 img {
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-6 {
+            padding: 15px;
+            
+        }
+
+        /* Animal Name */
+        .animal-info-6 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-6 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-6 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-6 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+        //ANIMAL CARD 7
+        .card-container-7 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-7 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 630px;
+            left: 460px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-7:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-7 img {
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-7 {
+            padding: 15px;
+            
+        }
+
+        /* Animal Name */
+        .animal-info-7 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-7 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-7 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-7 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+        //ANIMAL CARD 8
+        .card-container-8 {
+            position: relative; /* Establish positioning context */
+            width: 500px; /* Or whatever width you want */
+            height: 500px;
+        }
+        .animal-card-8 {
+            width: 180px;
+            height: 290px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background: white;
+            margin: 20px auto;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            top: 630px;
+            left: 660px;
+            position: absolute;
+        }
+
+        /* Hover Effect: Card lifts up with stronger shadow */
+        .animal-card-8:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animal Image */
+        .animal-card-8 img {
+            width: 180px;
+            height: 150px;
+            object-fit: cover;
+        }
+        /* Card Content */
+        .animal-info-8 {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* Animal Name */
+        .animal-info-8 h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Description */
+        .animal-info-8 p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .animal-info-8 .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: teal;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        /* Hover Effect: Button */
+        .animal-info-8 .btn:hover {
+            background-color: darkcyan;
+            transform: scale(1.05);
+        }
+
+
+        .sidebar {
+            width: 250px;
+            height: 76vh;
+            background-color:rgb(248, 231, 215); /* Dark Blue */
+            position: absolute;
+            border-radius: 10px;
+            visibility: hidden;
+            opacity: 0;
+            top: 160px;
+            left: -0px; /* Hidden initially */
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            padding-top: 60px;
+            box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        /* Sidebar Links */
+        .sidebar a {
+            display: block;
+            padding: 6px 6px;
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            border-radius: 10px;
+            background-color:rgba(240, 163, 75, 0.82); /* Teal */
+        }
+        .sidebar a:hover::before {
+            opacity: 1;
+        }
+
+        /* Hamburger Menu Icon */
+        .menu-icon {
+            position: absolute;
+            top: 180px;
+            left: 20px;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        
+        .sidebar.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .custom-horizontal {
+            position: absolute; /* Adjust position if needed */
+            top: 933px;         /* Distance from the top */
+            left: 250px;         /* Distance from the left */
+            width: 66%;         /* Length of the line */
+            height: 2px;        /* Thickness */
+            background-color:rgb(202, 169, 60); /* Change to any color */
+            border-radius: 10px; /* Makes the edges round */
+            border: none; /* Remove default border */
+        }
+
+        .vertical-line {
+            width: 2px; /* Line thickness */
+            height: 140px; /* Line height */
+            background-color: rgb(21, 66, 87); /* Line color */
+            position: absolute;
+            left: 250px;
+            top: 140px;
+        }
+
+        .vertical-line-2 {
+            width: 2px; /* Line thickness */
+            height: 140px; /* Line height */
+            background-color: rgb(21, 66, 87); /* Line color */
+            position: absolute;
+            left: 900px;
+            top: 140px;
+        }
+
+        .menu-container-2 {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: inline-block;
+        }
+        
+        .tooltip {
+            visibility: hidden;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 5px 8px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 110%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .menu-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+
+    </style>
+
+    <body>
+
+        
+        <h1 id="top"></h1>
+
+    <div class="full-background">
+        <div class="white-floating-window">
+
+        
+            <img src="https://media.istockphoto.com/id/1205560316/photo/smart-agritech-livestock-farming.jpg?s=612x612&w=0&k=20&c=Dv1kEQYiKalRSaeqDyFjFa54Gj6NKKOrx9Muk1bBlCg="
+            style="border: none; position: absolute; top: 0px; left: 0px; width: 264px; height: 122px; z-index: -1; border-radius: 10px; opacity: 0.50;">
+
+            <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 14px; left: 42px; position: absolute; font-family: 'Montserrat', sans-serif;">LAP-PLATFORM</p>
+            <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 38px; left: 40px; top: 28px; position: absolute; font-family: 'Nunito', sans-serif; font-size: 2.5rem;">FEATURES</p>
+        
+
+            {% if result %}
+
+                <h2>Animal Details:</h2>
+                <p><strong>Name:</strong> {{ result[1] }}</p>
+                <p><strong>Feeds:</strong> {{ result[2] }}</p>
+                <p><strong>Living Conditions:</strong> {{ result[3] }}</p>
+                <p><strong>Species:</strong> {{ result[4] }}</p>
+                <p><strong>Vaccination:</strong> {{ result[5] }}</p>
+                <p><strong>Expected Produce:</strong> {{ result[6] }}</p>
+                <p><strong>Nearest Vet Services:</strong> {{ result[7] }}</p>
+
+            {% elif result is none and request.method == 'POST' %}
+                <p>No results found.</p>
+            {% endif %}
+
+            <br>
+
+
+            <hr class="custom-hr">
+
+        
+            <img class="rounded-circle img-thumbnail" src="https://media.istockphoto.com/id/1034895924/photo/group-of-farm-animals.webp?a=1&b=1&s=612x612&w=0&k=20&c=0NcK9I48g5Uan3BtKjJsMKEhuAagd98kVl1xhFO53ZI="
+            style="border: none; width: 180px; height: auto; position: relative; top: -40px; left: 1000px;">
+
+
+            <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-Alimentacion.png"
+                style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 100px; left: 280px;">
+            <p style="position: absolute; left: 300px; top: 200px;">Feeds</p>
+
+            <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-REPORTES.png"
+                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 440px;">
+            <p style="position: absolute; left: 440px; top: 200px;">Growth Pattern</p>
+
+
+            <img class="my-imageB mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/ipc-trazabilidad-1.png?width=206&name=ipc-trazabilidad-1.png"
+                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 600px;">
+            <p style="position: absolute; left: 600px; top: 200px;">Outbreak Alerts</p>
+
+            <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-maquila.png"
+                style="width: 100px; height: 100px; border-radius: 50%;  object-fit: cover; top: 100px; left: 760px; transition: transform 0.9s ease; position: absolute;">
+            <p style="position: absolute; left: 760px; top: 200px;">Regular Reports</p>
+
+
+            <hr class="custom-hr-hr">
+
+            <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 14px; left: 880px; top: 250px; position: absolute; font-family: 'Montserrat', sans-serif;">LAP-PLATFORM</p>
+            <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 38px; left: 880px; top: 260px; position: absolute; font-family: 'Nunito', sans-serif; font-size: 2.5rem;">DASHBOARD</p>
+
+        
+            
+            <!-- Animal Card -->
+            <div class="animal-card">
+                <img src="https://media.istockphoto.com/id/1034895924/photo/group-of-farm-animals.webp?a=1&b=1&s=612x612&w=0&k=20&c=0NcK9I48g5Uan3BtKjJsMKEhuAagd98kVl1xhFO53ZI=" alt="Farm Animals">
+                    <div class="animal-info" style="background-color: #FF6600">
+                        <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Dedicated to suit all your needs for all Livestock</h3>
+                        <p></p>
+                        <a href="{{ url_for('home2_page') }}" class="btn">Learn More</a>
+                    </div>
+            </div>
+
+            <div class="card-container">
+                <!-- Animal Card 2-->
+                <div class="animal-card-2">
+                    <img src="https://media.istockphoto.com/id/1470677566/photo/curious-cow-looking-to-the-camera-at-cattle-farm.webp?a=1&b=1&s=612x612&w=0&k=20&c=y0AsywQDv4bLxJGLhT2HeokOHGpGIGzrXUFjS29wIoU=" alt="Farm Animals">
+                        <div class="animal-info-2" style="background-color:rgb(252, 246, 129)">
+                            <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Discover variety of feeds and additives suitable for your animal</h3>
+                            <p></p>
+                            <a href="{{ url_for('nearby_vets') }}" class="btn">Feeds & Additives</a>
+                        </div>
+                </div>
+            <div>
+
+            <div class="card-container-3">
+                <!-- Animal Card 3-->
+                <div class="animal-card-3">
+                    <div class="image-container">
+                        <img class="half-image" src="https://images.unsplash.com/photo-1553531009-c4605f302b47?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFybSUyMGFuaW1hbHN8ZW58MHx8MHx8fDA%3D" style="width: 90px;">
+                        <img class="half-image" src="https://images.unsplash.com/photo-1531155179084-3e1f15110922?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGZhcm0lMjBhbmltYWx8ZW58MHx8MHx8fDA%3D" style="width: 160px; transform: scaleX(-1);" alt="Farm Animals">
+                    </div>
+                    <div class="animal-info-3" style="background-color: #50C878">
+                        <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Monitor your animal Growth Pattern effectively here!</h3>
+                        <p></p>
+                        <a href="{{ url_for('nearby_vets') }}" class="btn">Growth Monitor</a><br>
+                        <img src="https://cdn-icons-png.flaticon.com/128/5528/5528038.png" style="width: 22px; height: 22px; top: 216px; left: 80px; position: absolute;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container-4">
+                <!-- Animal Card 4-->
+                    <div class="animal-card-4">
+                        <img src="https://cdn-icons-png.flaticon.com/128/8603/8603115.png" style="width: 128px; height: 128px; object-fit: cover;">
+                        <div class="animal-info-4" style="background-color: #F4A460">
+                            <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Provides Up-to-Date Vaccinantion Schedule for all animals</h3>
+                            <p></p>
+                            <a href="{{ url_for('livestock_dashboard') }}" class="btn">Vaccination</a>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="card-container-5">
+                <!-- Animal Card 5-->
+                <div class="animal-card-5">
+                    <img src="https://cdn-icons-png.flaticon.com/128/16946/16946889.png" style="width=128px; height: 128px;">
+                        <div class="animal-info-5" style="background-color: #87CEEB">
+                            <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Learn Most Suitable living condition on your animal of choice.</h3>
+                            <p></p>
+                            <a href="{{ url_for('home2_page') }}" class="btn">Habitat</a>
+                        </div>
+                </div>
+            </div>
+
+            <div class="card-container-6">
+                <!-- Animal Card 6-->
+                <div class="animal-card-6">
+                    <div class="image-container-6">
+                        <img class="half-image-6" src="https://media.istockphoto.com/id/1481939297/photo/veterinary-agriculture-and-black-woman-with-chicken-on-farm-for-health-inspection-wellness.jpg?s=612x612&w=0&k=20&c=xJZLTGU6OGHvwRVzBAOBL-ZobmLcZ_kIIgrpWSBh8uM=">
+                    </div>
+                    <div class="animal-info-6" style="background-color: #F4A460;">
+                        <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Knowledge on handling & and improving overall animal Health</h3>
+                        <p></p>
+                        <a href="{{ url_for('nearby_vets') }}" class="btn">Health Matters</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container-7">
+                <!-- Animal Card 7-->
+                <div class="animal-card-7">
+                    <img src="https://media.istockphoto.com/id/2166423997/photo/full-frame-shot-of-sheep-standing-at-farm.jpg?s=612x612&w=0&k=20&c=YlyXoNJf3T8VjlateYSzc5Xypua94praEDIeDxJ-3aU=" alt="Farm Animals">
+                        <div class="animal-info-7" style="background-color:rgb(245, 242, 188)">
+                            <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Discover Variety of animal Species and Breed of any Livestock</h3>
+                            <p></p>
+                            <a href="{{ url_for('livestock_dashboard') }}" class="btn">Species & Variety</a>
+                        </div>
+                </div>
+            </div>
+
+            <div class="card-container-8">
+                <!-- Animal Card 8-->
+                <div class="animal-card-8">
+                    <img class="img-thumbnail" src="https://cdn-icons-gif.flaticon.com/17904/17904089.gif">
+                    <div class="animal-info-8" style="background: linear-gradient(140deg, rgba(3, 94, 139, .93), rgba(0, 203, 169, .73), rgba(0, 225, 80, .04)), linear-gradient(72deg, transparent, rgba(0, 225, 117, .64));">
+                        <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Track animal Health, Feed Intake, Habitat, Health and More.</h3>
+                        <p></p>
+                        <a href="{{ url_for('connect_farmers') }}" class="btn">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        
+            
+            <img class="menu-icon" onclick="toggleSidebar()" onmouseover="showTooltip()" onmouseout="hideTooltip()" src="https://cdn-icons-png.flaticon.com/128/3917/3917482.png" style="width: 30px; height: 30px;">
+            <img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png" style="width: 30px; height: 30px; position: absolute; top: 240px; left: 20px;">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917546.png" style="width: 30px; height: 30px; position: absolute; top: 300px; left: 20px;">
+
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917132.png" style="width: 30px; height: 30px; position: absolute; top: 360px; left: 20px;">
+
+
+            <img src="https://media.istockphoto.com/id/1016286868/photo/agritech-concept-with-dairy-cows-in-cowshed-with-data-display.jpg?s=612x612&w=0&k=20&c=p3l_87rSWfvD9kpw6XM3FoJG1bnYpYoJntFpmjZ5KP8="
+            style="position: absolute; top: 200px; left: 870px; width: 280px; height: 150px; z-index: -12; border-radius: 10px; opacity: 0.70;">
+            
+            <!-- Sidebar Navigation -->
+            <div class="sidebar" id="sidebar">
+            <h2 style="color: chocolate; font-size: 1.8rem; top: 10px; font: bold; left: 60px; position: absolute;">LAP PLATFORM</h2>
+                <hr>
+                
+                <a href="{{ url_for('welcome_page') }}" style="position: absolute; top: 80px; left: 40px"><img src="https://cdn-icons-png.flaticon.com/128/18561/18561855.png" style="width: 22px; height: 22px; position: absolute; top: 7px; left: -20px;">Home</a>
+                <a href="{{ url_for('livestock_dashboard') }}" style="position: absolute; top: 120px; left: 40px;"><img class="menu-icon" onclick="toggleSidebar()" onmouseout="hideTooltip()" onmouseover="showTooltip" src="https://cdn-icons-png.flaticon.com/128/3917/3917762.png" style="width: 22px; height: 22px; position: absolute; top: 7px; left: -20px;">Dashboard</a>
+                <a href="#" style="position: absolute; top: 160px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png"style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Reports</a>
+                <a href="\bottom" style="position: absolute; top: 200px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3917/3917051.png" style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Settings</a>
+                <a href="{{ url_for('register_page') }}" style="position: absolute; top: 240px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3917/3917546.png" style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Log-in/Register</a>
+            </div>
+
+            
+            <img src="https://media.istockphoto.com/id/1016287040/photo/smartphone-app-reading-dairy-cows-data-tag-agritech-concept.jpg?s=612x612&w=0&k=20&c=PRjF0X7J44JiQfVfsgWKtG8XaHyYX0lSSUc2cDihhvo="
+            style="border: none; position: absolute; top: 848px; left: 0px; width: 246px; height: 152px; z-index: -1; border-radius: 10px; opacity: 0.80;">
+            
+            <hr class="custom-horizontal"></hr>
+
+
+
+            <!-- JavaScript for Sidebar Toggle -->
+            <script>
+                function toggleSidebar() {
+                    let sidebar = document.getElementById("sidebar");
+        
+                    // Toggle visibility and opacity
+                    if (sidebar.classList.contains("active")) {
+                        sidebar.classList.remove("active"); // Hide Sidebar
+                    } else {
+                        sidebar.classList.add("active"); // Show Sidebar
+                    }
+                }
+
+
+                function validateEmail() {
+                    let email = document.getElementById("emailInput").value;
+                    let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  
+                    if (!regex.test(email)) {
+                        alert("Please enter a valid email address.");
+                        return false;
+                    }
+                    return true;
+                }
+            </script>
+            
+            
+
+
+
+            <!--
+            
+
+            <img src="https://media.istockphoto.com/id/1345836558/photo/cow-with-rfid-chip-and-infographics.jpg?s=612x612&w=0&k=20&c=BThlqbT1eDuhk92MtFcJ9PLk6UOZmwL58jSFPM4WXL8=">
+            <img src="https://media.istockphoto.com/id/1483439736/video/automated-egg-production.jpg?s=640x640&k=20&c=Ivx4cKfW_dOaj-vBiOonR11drSRKJidQwCEB4S5630Q=">
+            <img src="https://media.istockphoto.com/id/1185486632/photo/vegetarian-and-cow.webp?a=1&b=1&s=612x612&w=0&k=20&c=uS5WTqWyOrIz9wwwQcFHDo1LiYpsAyzl38hZ9M6g7CI=">
+            <img src="https://media.istockphoto.com/id/1188846697/photo/cows-eat-grass-in-the-barn-a-farm-where-cattle-are-bred-cattle-fattening-for-the-production.webp?a=1&b=1&s=612x612&w=0&k=20&c=PwP9lt51XVpAvco8GyBHzqUZgvYJHwxpYjqegEbDNHA=">
+            <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/9533/9533620.gif">
+            <img src="https://cdn-icons-png.flaticon.com/128/8603/8603115.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917132.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917762.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917658.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/5528/5528038.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917546.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917482.png">
+            <img src="https://cdn-icons-png.flaticon.com/128/13727/13727536.png">
+            -->
+
+        </div>
+    </div>
+
+
+    <div style="background: linear-gradient(to bottom, #D0E8FF, #87CEEB, #AEEEEE);
+        top: 1038px; width: 210vh; height: 500px; position: absolute; left: -58px;">
+        <div style="border-radius: 10px; left: 60px; width: 90%; height: 480px; top: 20px; position: absolute;
+        #background: linear-gradient(to bottom, #D0E8FF, #87CEEB, #AEEEEE);
+        background-image: url('https://6272027.fs1.hubspotusercontent-na1.net/hub/6272027/hubfs/Im%C3%A1genes/aumenta-la-rentabilidad.jpeg?width=1440&name=aumenta-la-rentabilidad.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; color: white; padding: 20px; text-align: center;">
+            <h3 style="font-size: 3rem; font-color: white; font-weight: bold;">
+                Journey Throughout the Life <br>of Your Livestock.
+            </h3>
+
+            <h4 id="bottom"></h4>
+
+            <div style="background: white; width: 100%; height: 300px;
+                top: 180px; position: absolute; left: 0px;">
+                <p style="color: black; position: absolute; top: 140px; left: 40px;">Contact Us:</p>
+
+                <img style="position: absolute; top: 170px; left: 30px;"src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg">
+                <a href="tel:+254115513070">
+                    <p style="color: black; position: absolute; top: 210px; left: 18px;">+254(0)11-55-130-70</p>
+                </a>
+                <p style="color: black;">Sign up with email to get Regular Updates</p><br>
+                <form method="POST" class="form-register" action="{{ url_for('register_page') }}" style="position: absolute; top: 32px; left: 480px;">
+                    <input type="email" id="emailInput" name="email" placeholder="Enter email" style="padding: 8px; width: 180px; height: 34px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; position: absolute; top: -4px; left: -10px;">
+                    <button type="submit" style="position: absolute; top: -4px; left: 180px; padding: 8px 8px; background:rgba(13, 170, 209, 0.7); color: black; border: none; border-radius: 5px; cursor: pointer; width: 84px; height: 32px; text-align: center; line-height: 16px;">Email Us</button>
+                </form>
+
+
+                <div class="copyright">
+
+                    <div class="vertical-line"></div>
+                    <div class="vertical-line-2"></div>
+                    <a href="Privacy_page" onmouseover="this.style.color='blue'" onmouseout="this.style.color='black'"style="position: absolute; top: 140px; left: 910px; color: black;"> ~ Privacy</a>
+                    <a href="Privacy_page" onmouseover="this.style.color='blue'" onmouseout="this.style.color='black'"style="position: absolute; top: 188px; left: 910px; color: black;"> ~ Terms Of Use</a>
+
+
+                    <p style="position: absolute; top: 240px; left: 910px; color: black;" class="hover-blue">All rights Reserved</p>
+                    &lt;&lt;&lt; &lt;&lt;&lt; &lt;&lt;&lt; &lt;&lt;&lt; &copy; <a href="/home"> 2025 Livestock Analytics Platform (LAP) </a> &gt;&gt;&gt; &gt;&gt;&gt; &gt;&gt;&gt; &gt;&gt;&gt; <br></br>
+                    <br></br>
+                    <img style="position: absolute; top: 120px; left: 496px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/L-tec.png?width=177&height=60&name=L-tec.png">
+                    
+                    <img style="position: absolute; top: 200px; left: 540px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestock.png?width=115&height=70&name=livestock.png">
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}
+
+
+
+
+

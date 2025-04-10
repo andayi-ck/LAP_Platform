@@ -1,0 +1,158 @@
+
+{% block title %}
+   
+{% endblock %}
+
+{% block content %}
+
+   <style>
+
+      .full-background {
+         left: -500px;
+         border-radius: 10px;
+         background-image: url("https://www.woah.org/app/themes/woah/dist/images/newsletter-bg.jpg");
+         background-size: cover;
+         background-position: center;
+         background-repeat: no-repeat;
+         height: 100%; /* Full viewport height */
+         width: 100%;
+
+      }
+
+      .floating-background-container {
+            top: 2px;
+            left: 2px;
+            border-radius: 10px;
+            position: relative;
+            width: 740px;
+            height: 622px;
+            #background: linear-gradient(rgba(37, 69, 77, 0.8), rgba(9, 79, 100, 1.0))center/cover no-repeat;
+            #background: #2F4F4F;
+            #background: #3A5F73;
+            #background: #D4A373;
+            #background: #A7A0C4;
+            background: #1F3A40;
+
+      }
+
+      .center-image{
+         position: absolute;
+         top: 30px;   /* Distance from the top */
+         left: 60px;
+
+      }
+      .custom-hr {
+         position: absolute; /* Adjust position if needed */
+         top: 40px;         /* Distance from the top */
+         left: 340px;         /* Distance from the left */
+         width: 44%;         /* Length of the line */
+         height: 5px;        /* Thickness */
+         background-color:rgb(238, 235, 233); /* Change to any color */
+         border-radius: 10px; /* Makes the edges round */
+         border: none; /* Remove default border */
+      }
+
+      .vertical-line {
+         width: 6px;   /* Thickness of the vertical line */
+         height: 454px; /* Set the height of the vertical line */
+         background-color: rgb(238, 235, 233);
+         position: absolute;
+         top: 50px;   /* Aligns it to the end of the horizontal line */
+         left: 660px; /* Moves it to the exact end of the horizontal line */
+         border-radius: 10px;
+      }
+
+      .feed-itemmRr { /* Give your paragraphs a class */
+         width: 120px;
+         height: 20px;
+         padding: 15px;
+         background: linear-gradient(to bottom,rgb(214, 89, 50), #D45D2C);
+         font-family: 'Roboto', 'Arial', sans-serif;
+         color:rgb(189, 70, 31);
+         font-size: 18px;
+         border-radius: 15px;
+         text-align: center;
+         position: relative; /* Needed if you want to position something relative to it */
+         transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+         box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+         cursor: pointer;
+         left: 520px;
+         top: 510px;
+      }
+
+      .feed-itemmRr:hover {
+         transform: scale(1.1);
+         background-color:rgb(185, 177, 175);
+      }
+
+      .feed-itemmRr span {
+         font-size: 16px;
+      }
+
+      .horizontal-line {
+         position: absolute; /* Adjust position if needed */
+         top: 550px;         /* Distance from the top */
+         left: 55px;         /* Distance from the left */
+         width: 58%;         /* Length of the line */
+         height: 6px;        /* Thickness */
+         background-color:rgb(238, 235, 233); /* Change to any color */
+         border-radius: 10px; /* Makes the edges round */
+         border: none; /* Remove default border */
+      }
+
+   </style>
+
+   
+
+   <div class="full-background">
+
+      <!--
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/11188/11188572.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/17688/17688061.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/11694/11694871.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/9533/9533620.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/12761/12761863.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/14444/14444020.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/18996/18996496.gif">
+      <img class="rounded-circle img-thumbnail" src="https://cdn-icons-gif.flaticon.com/9533/9533646.gif">
+      <img class="rounded-circle img-thumbnail" src="https://media.istockphoto.com/id/1470677566/photo/curious-cow-looking-to-the-camera-at-cattle-farm.webp?a=1&b=1&s=612x612&w=0&k=20&c=y0AsywQDv4bLxJGLhT2HeokOHGpGIGzrXUFjS29wIoU=">
+      <img class="rounded-circle img-thumbnail" src="https://images.unsplash.com/photo-1531155179084-3e1f15110922?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGZhcm0lMjBhbmltYWx8ZW58MHx8MHx8fDA%3D">
+      <img class="rounded-circle img-thumbnail" src="https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZmFybSUyMGFuaW1hbHxlbnwwfHwwfHx8MA%3D%3D">
+      <img class="rounded-circle img-thumbnail" src="https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFybSUyMGFuaW1hbHN8ZW58MHx8MHx8fDA%3D">
+      <img class="rounded-circle img-thumbnail" src="https://images.unsplash.com/photo-1553531009-c4605f302b47?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFybSUyMGFuaW1hbHN8ZW58MHx8MHx8fDA%3D">
+      <img class="rounded-circle img-thumbnail" src="https://media.istockphoto.com/id/1034895924/photo/group-of-farm-animals.webp?a=1&b=1&s=612x612&w=0&k=20&c=0NcK9I48g5Uan3BtKjJsMKEhuAagd98kVl1xhFO53ZI=">
+      -->
+      
+
+      <div class="floating-background-container">
+         <img class="center-image mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestockW.png?width=271&height=50&name=livestockW.png">
+         <hr class="custom-hr">
+
+         <p style="font-weight: bold; color: white; font-size: 70px; font-family: Arial, sans-serif;  text-align: center; position: absolute; top: 100px; left: 220px; transform: translate(-50%, -50%); text-shadow: 2px 2px 5px black;">Explore on</p>
+         <p style="font-weight: bold; color: rgb(189, 70, 31); font-size: 64px; font-family: Arial, sans-serif; position: absolute; top: 160px; left: 42px; text-shadow: 2px 2px 5px black;">Livestock Farming</p>
+         <p style="font-weight: bold; color: white; font-size: 70px; font-family: Arial, sans-serif;  text-align: center; position: absolute; top: 280px; left: 170px; transform: translate(-50%, -50%); text-shadow: 2px 2px 5px black;">with us</p>
+
+         <p style="color: white; font-size: 24px; font-family: Arial, sans-serif; position: absolute; top: 490px; left: 250px; transform: translate(-50%, -50%); text-shadow: 2px 2px 5px black;">Discover a guide in your Livestock<br>
+            Rearing Journey Here!
+         </p>
+
+         <div class="vertical-line"></div>
+
+
+         <div style="display: flex;">
+            <p class="feed-itemmRr" style="color:rgb(238, 233, 232) !important;">
+               <a href="{{ url_for('home_page') }}" style="color:rgb(238, 233, 232)">Explore</a><span>➜</span>
+            </p>
+         </div>
+
+
+         <hr class="horizontal-line">
+         
+      </div>
+
+      
+
+   <div>
+
+
+{% endblock %}

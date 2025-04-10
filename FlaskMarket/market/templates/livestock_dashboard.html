@@ -1,0 +1,450 @@
+{% extends 'base.html' %}
+{% block title %}
+    livestock dashboard
+{% endblock %}
+
+{% block content %}
+
+    
+
+
+    <style>
+
+        .contain {
+            position: relative;
+            width: 100px;
+            max-width: 400px; /* Adjust width as needed */
+            padding: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        /* Background Image with Dark Overlay */
+        .contain::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("https://www.woah.org/app/themes/woah/dist/images/newsletter-bg.jpg") center/cover no-repeat; /* Add your image URL */
+            filter: brightness(50%); /* Darkens the background */
+            z-index: -1;
+        }
+        
+        .container {
+            position: absolute;
+            top: 420px;
+            left: 230px;
+            transform: translate(-50%, -50%);
+            background:rgba(212, 206, 206, 0.89);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 6px 19px 23px 1px rgba(0, 0, 0, 0.15);
+            width: 400px;
+            height: 190px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .circular-window {
+            width: 100px; /* Adjust size */
+            height: 100px; /* Make it a perfect circle */
+            background: linear-gradient(315deg, rgba(146, 191, 233, 0.43) 45%, rgba(224, 169, 191, 0.24) 62%);
+            color: black;
+            display: flex;
+            justify-content: center; /* Center text horizontally */
+            align-items: center; /* Center text vertically */
+            text-align: center;
+            border-radius: 50%; /* Makes it circular */
+            position: absolute;
+            top: 60px;
+            left: 450px;
+            text: 16px;
+            transform: translate(-50%, -50%);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            cursor: pointer;
+            transform: scale(0.5);
+        }
+        .floating-window {
+            position: relative; /* Or fixed */
+            top: -10px;
+            left: 150px;
+        }
+        .floating-link {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Ensures it fills the container */
+        }
+    
+        .floating-link:hover {
+            text-decoration: underline; /* Adds underline on hover */
+        }
+
+        .one-third-background {
+            width: 100%;
+            height: 700px;
+            #background: linear-gradient(rgba(27, 42, 31, 0.8), rgba(27, 42, 31, 0.8)), url("https://www.woah.org/app/themes/woah/dist/images/newsletter-bg.jpg") center/cover no-repeat;
+            #background-color: linear-gradient(to bottom, #12b886 5%, #ffd43b 95%);
+            #background-image: radial-gradient(circle, rgba(104, 173, 237, 0.43) 18%, rgba(237, 110, 160, 0.24) 90%);
+            background-image: url("https://www.woah.org/app/themes/woah/dist/images/newsletter-bg.jpg"); /* Replace with your image path */
+            
+            overflow: hidden;
+            position: absolute;
+            color: white;
+            top: 0px;
+            left: 0px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            
+        }
+        .one-third-background-container {
+            top: 80px;
+            left: 10px;
+            border-radius: 10px;
+            position: relative;
+            width: 450px;
+            height: 590px;
+            background: linear-gradient(rgba(37, 69, 77, 0.8), rgba(44, 58, 48, 0.8))center/cover no-repeat;
+        }
+
+        .text-style{
+            overflow: hidden;
+            font-size: 60px;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: 0px;
+            line-height: 53px;
+            white-space: pre-line;
+            word-break: break-word;
+            opacity: 1;
+            visibility: visible;
+            margin-inline-start: 10px;
+        }
+
+        select {
+            background: transparent;  /* Makes the background transparent */
+            border: none;  /* Removes the border */
+            outline: none; /* Removes the focus outline */
+            color:rgba(16, 112, 145, 0.7);
+            font-size: 16px; /* Adjust font size */
+            padding: 5px; /* Adds some spacing */
+            
+        }
+        
+        /* Optional: Add a down arrow icon */
+        select::after {
+            content: "▼";
+            font-size: 14px;
+            color: blue;
+            padding-left: 10px;
+        }
+
+        /* Results container floating over background */
+        .results-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 40px;
+            left: 540px;
+            height: 600px;
+            z-index: 1; /* Above background */
+        }
+        .results-wrapper h2 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .results-wrapper .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .results-wrapper .age-sections-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .results-wrapper .age-section {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .results-wrapper .age-section h3 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin: 0 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        .results-wrapper ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .results-wrapper ul li {
+            font-size: 16px;
+            color: #34495e;
+            margin: 8px 0;
+        }
+        .results-wrapper ul li strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .results-wrapper ul ul {
+            padding-left: 20px;
+        }
+        .results-wrapper ul ul li {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .results-wrapper a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #7f8c8d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .results-wrapper a:hover {
+            background-color: #6c7778;
+        }
+        @media (max-width: 900px) {
+            .results-wrapper .age-sections-container {
+                flex-direction: column;
+            }
+            .results-wrapper .age-section {
+                min-width: 100%;
+            }
+            .results-wrapper {
+                margin: 20px;
+                padding: 15px;
+            }
+        }
+
+        .container {
+            position: absolute;
+            top: 500px;
+            left: 230px;
+            transform: translate(-50%, -50%);
+            background: #E6C7EE;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 6px 19px 23px 1px rgba(0, 0, 0, 0.15);
+            width: 400px;
+            height: 250px; /* Increased to fit result */
+            border-bottom: 1px solid #F7B6B6;
+            overflow-y: auto;
+            text-align: center;
+            
+        }
+
+
+    </style>
+
+
+        <div class="one-third-background">
+
+        <div class="one-third-background-container">
+            <p class="text-style" style="position: absolute; top: 20px;">Explore</p>
+            <p class="text-style" style="color: #B6421E; position: absolute; top: 100px; left: 0px;">more features</p>
+            <p class="text-style" style="position: absolute; top: 180px; left: 0px;">here</p>
+
+            
+        </div>
+
+        <div class="circular-window">
+            <h2 id="explore">1</h2>
+        </div>
+
+
+        
+
+            
+        <div class="container">
+            <!-- Floating Age Calculator -->
+            <div class="floating-container">
+                <form id="ageForm" onsubmit="calculateAge(event)">
+                    <label for="dob" style="margin-right: 23px; position: absolute; top: 10px; left: 10px; color: black;">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required style="position: absolute; top: 10px; left: 180px;">
+
+                    <label for="calc_date" style="margin-right: 0px; position: absolute; top: 50px; left: 10px; color: black;">Calculate age on:</label>
+                    <input type="date" id="calc_date" name="calc_date" required style="position: absolute; top: 50px; left: 180px;">
+
+                    <label for="format_choice" style="margin-right: 14px; position: absolute; top: 90px; left: 10px; color: black;">Show result in:</label>
+                    <select class="select" id="format_choice" name="format_choice" style="position: absolute; top: 90px; left: 120px;">
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                        <option value="ymd" selected>Years/Months/Days</option>
+                    </select>
+
+                    <button type="submit" style="position: absolute; top: 130px; left: 10px; border: none;">Calculate Age</button>
+                </form>
+
+                <div id="resultBox" style="display: none; margin-top: 160px; color: black;">
+                    <p id="resultText">= </p>
+                </div>
+            </div>
+            
+        </div>
+
+
+
+
+
+        <script>
+            // Age Calculator Functionality
+            function calculateAge(event) {
+                event.preventDefault();
+
+                const dob = new Date(document.getElementById('dob').value);
+                const calcDate = new Date(document.getElementById('calc_date').value);
+                const format = document.getElementById('format_choice').value;
+                const resultBox = document.getElementById('resultBox');
+                const resultText = document.getElementById('resultText');
+
+                if (isNaN(dob) || isNaN(calcDate)) {
+                    resultText.textContent = 'Please enter valid dates';
+                    resultBox.style.display = 'block';
+                    return;
+                }
+
+                if (calcDate < dob) {
+                    resultText.textContent = 'Calculation date must be after birth date';
+                    resultBox.style.display = 'block';
+                    return;
+                }
+
+                const diffMs = calcDate - dob;
+                const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(days / 7);
+                const months = Math.floor(days / 30.44);
+                let years = calcDate.getFullYear() - dob.getFullYear();
+                let remainingMonths = calcDate.getMonth() - dob.getMonth();
+                let remainingDays = calcDate.getDate() - dob.getDate();
+
+                if (remainingMonths < 0 || (remainingMonths === 0 && remainingDays < 0)) {
+                    years--;
+                    remainingMonths += 12;
+                }
+                if (remainingDays < 0) {
+                    const lastMonth = new Date(calcDate.getFullYear(), calcDate.getMonth() - 1, dob.getDate());
+                    remainingDays = Math.floor((calcDate - lastMonth) / (1000 * 60 * 60 * 24));
+                }
+
+                let result;
+                switch (format) {
+                    case 'days':
+                    result = `${days} days`;
+                    break;
+                case 'weeks':
+                result = `${weeks} weeks`;
+                break;
+                case 'months':
+                result = `${months} months`;
+                break;
+                case 'years':
+                result = `${years} years`;
+                break;
+                case 'ymd':
+                result = `${years} years, ${remainingMonths} months, ${remainingDays} days`;
+                break;
+                }
+
+                resultText.textContent = `Age: ${result}`;
+                resultBox.style.display = 'block';
+            }
+            
+    </script>
+            
+
+        <br></br>
+        <br></br>
+
+        <div class="results-wrapper">
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+    
+            {% if grouped_results %}
+                <h2>Details for: {{ animal }}</h2>
+                <div class="age-sections-container">
+                    {% for age, data in grouped_results.items() %}
+                        <div class="age-section">
+                            <h3>{{ age }}</h3>
+                            <ul>
+                                <li><strong>Species:</strong> {{ data['species_name'] }}</li>
+                                <li><strong>Habitat:</strong> {{ data['habitat'] }}</li>
+                                <li><strong>Temperature Range:</strong> {{ data['temperature_range'] }}</li>
+                                <li><strong>Feeds:</strong>
+                                    <ul>
+                                        {% for feed in data['feeds'] %}
+                                            <li>{{ feed['feed_type'] }} (Quantity: {{ feed['quantity_per_day'] }})</li>
+                                        {% else %}
+                                            <li>Not Available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li><strong>Vaccination Schedule:</strong>
+                                    <ul>
+                                        {% for vaccine in data['vaccines'] %}
+                                            <li>{{ vaccine }}</li>
+                                        {% else %}
+                                            <li>Not Available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li><strong>Diseases:</strong>
+                                    <ul>
+                                        {% for disease in data['diseases'] %}
+                                            <li>{{ disease }}</li>
+                                        {% else %}
+                                            <li>Not Available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li><strong>Produce:</strong> {{ data['produce'] }}</li>
+                                <li><strong>Average Weight:</strong>
+                                    <ul>
+                                        {% for weight in data['weights'] %}
+                                            <li>{{ weight }}</li>
+                                        {% else %}
+                                            <li>Not Available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li><strong>Additives/Minerals:</strong>
+                                    <ul>
+                                        {% for supplement in data['supplements'] %}
+                                            <li>{{ supplement['supplement_name'] }} (Dosage: {{ supplement['dosage'] }})</li>
+                                        {% else %}
+                                            <li>Not Available</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock %}
