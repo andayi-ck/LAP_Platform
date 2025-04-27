@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block title %}
+    Add Vet Profile - Livestock Management System
+{% endblock %}
+{% block content %}
+<style>
+    body {
+        background-image: url('https://media.istockphoto.com/id/2025553056/photo/dog-at-the-veterinarian.webp?a=1&b=1&s=612x612&w=0&k=20&c=GJ1WlTDcwSKzfay15q6w5GFk92lMIxjXwaMFa1cRHeo=');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Roboto', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        position: relative;
+    }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+    .container {
+        position: absolute;
+        left: 50px;
+        top: 40px;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 2;
+    }
+    h2 {
+        color: #2e7d32;
+        text-align: center;
+        margin-bottom: 25px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    h2::before {
+        content: '';
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/149/149071.png');
+        background-size: cover;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+    }
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        outline: none;
+    }
+    .form-group input[name="name"],
+    .form-group input[name="email"],
+    .form-group input[name="specialty"],
+    .form-group input[name="clinic"],
+    .form-group input[name="experience"],
+    .form-group input[name="availability"],
+    .form-group input[name="accepting"],
+    .form-group input[name="image_url"],
+    .form-group input[name="reviews"],
+    .form-group input[name="review_count"],
+    .form-group input[name="rating_score"] {
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        background-size: 20px;
+    }
+    .form-group input[name="name"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/149/149071.png');
+    }
+    .form-group input[name="email"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/561/561127.png');
+    }
+    .form-group input[name="specialty"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/3063/3063172.png');
+    }
+    .form-group input[name="clinic"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/3063/3063175.png');
+    }
+    .form-group input[name="experience"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/3659/3659898.png');
+    }
+    .form-group input[name="availability"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/3659/3659898.png');
+    }
+    .form-group input[name="accepting"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/561/561184.png');
+    }
+    .form-group input[name="image_url"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/569/569501.png');
+    }
+    .form-group input[name="reviews"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/1384/1384060.png');
+    }
+    .form-group input[name="review_count"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/1384/1384060.png');
+    }
+    .form-group input[name="rating_score"] {
+        background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828884.png'); /* Star icon for rating score */
+    }
+    .rating-display {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+        color: #f39c12;
+        font-family: 'Montserrat', sans-serif;
+    }
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        background: #2e7d32;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'Nunito', sans-serif;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+    .submit-btn:hover {
+        background: #1b5e20;
+        transform: translateY(-2px);
+    }
+    .submit-btn::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/3063/3063172.png');
+        background-size: cover;
+    }
+    .flash-messages {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .flash-messages .success,
+    .flash-messages .error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 6px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+    }
+    .flash-messages .success {
+        color: #2e7d32;
+        background: #e8f5e9;
+    }
+    .flash-messages .success::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png');
+        background-size: cover;
+    }
+    .flash-messages .error {
+        color: #d32f2f;
+        background: #ffebee;
+    }
+    .flash-messages .error::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828665.png');
+        background-size: cover;
+    }
+</style>
