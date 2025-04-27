@@ -1,0 +1,17 @@
+
+
+{% extends 'base.html' %}
+{% block content %}
+<div style="margin: 50px;">
+    <h2>Create a New Event</h2>
+    <form method="POST">
+        <label for="title">Event Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        <label for="content">Event Details:</label><br>
+        <textarea id="content" name="content" rows="5" required></textarea><br><br>
+        <label for="event_date">Event Date (YYYY-MM-DD):</label><br>
+        <input type="date" id="event_date" name="event_date" required><br><br>
+        <button type="submit">Create Event</button>
+    </form>
+</div>
+{% endblock %}
