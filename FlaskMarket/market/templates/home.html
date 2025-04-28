@@ -1068,28 +1068,12 @@
                 top: 180px; position: absolute; left: 0px;">
                 <p style="color: black; position: absolute; top: 140px; left: 40px;">Contact Us:</p>
 
-                <img style="position: absolute; top: 170px; left: 30px;"src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg">
-                <a href="tel:+254115513070">
-                    <p style="color: black; position: absolute; top: 210px; left: 18px;">+254(0)11-55-130-70</p>
-                </a>
-                <p style="color: black;">Sign up with email to get Regular Updates</p><br>
-                <form method="POST" class="form-register" action="{{ url_for('register_page') }}" style="position: absolute; top: 32px; left: 480px;">
-                    <input type="email" id="emailInput" name="email" placeholder="Enter email" style="padding: 8px; width: 180px; height: 34px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; position: absolute; top: -4px; left: -10px;">
-                    <button type="submit" style="position: absolute; top: -4px; left: 180px; padding: 8px 8px; background:rgba(13, 170, 209, 0.7); color: black; border: none; border-radius: 5px; cursor: pointer; width: 84px; height: 32px; text-align: center; line-height: 16px;">Email Us</button>
-                </form>
-
+                
+                
 
                 <div class="copyright">
 
-                    <div class="vertical-line"></div>
-                    <div class="vertical-line-2"></div>
-                    <a href="Privacy_page" onmouseover="this.style.color='blue'" onmouseout="this.style.color='black'"style="position: absolute; top: 140px; left: 910px; color: black;"> ~ Privacy</a>
-                    <a href="Privacy_page" onmouseover="this.style.color='blue'" onmouseout="this.style.color='black'"style="position: absolute; top: 188px; left: 910px; color: black;"> ~ Terms Of Use</a>
-
-
-                    <p style="position: absolute; top: 240px; left: 910px; color: black;" class="hover-blue">All rights Reserved</p>
-                    &lt;&lt;&lt; &lt;&lt;&lt; &lt;&lt;&lt; &lt;&lt;&lt; &copy; <a href="/home"> 2025 Livestock Analytics Platform (LAP) </a> &gt;&gt;&gt; &gt;&gt;&gt; &gt;&gt;&gt; &gt;&gt;&gt; <br></br>
-                    <br></br>
+                    
                     <img style="position: absolute; top: 120px; left: 496px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/L-tec.png?width=177&height=60&name=L-tec.png">
                     
                     <img style="position: absolute; top: 200px; left: 540px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestock.png?width=115&height=70&name=livestock.png">
@@ -1100,7 +1084,56 @@
             </div>
         </div>
     </div>
+
+    <!-- === NEW FOOTER SECTION === -->
+    <footer class="footer">
+        <p>&copy; 2025 Livestock Analytics Platform (LAP). All rights reserved.</p>
+        <p>
+            <a href="{{ url_for('home_page') }}">Home</a> |
+            <a href="Privacy_page">Privacy Policy</a> |
+            <a href="Privacy_page">Terms of Use</a> |
+            <a href="tel:+254115513070">Contact Us</a>
+        </p>
+        <p>Follow us on social media for updates!</p>
+        <p style="color: white; position: absolute; top: 190px; left: 580px;">Sign up with Gmail to get Regular Updates</p><br>
+                <div class="flash-messages" style="position: absolute; top: 0px; left: 480px;">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="{{ category }}" style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 5px; margin-bottom: 10px;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <form method="POST" class="form-register" action="{{ url_for('register_page') }}" style="position: absolute; top: 230px; left: 600px;" onsubmit="return validateEmail()">
+                    <input type="email" class="bj-input" id="emailInput" name="email" placeholder="Enter Gmail address" required>
+                    <button type="submit" class="bj-button bj-button--outline bj-button--green bj-button--sm track">Sign Up</button>
+                </form>
+
+
+                <a href="tel:+254115513070">
+                    <img style="position: absolute; top: 120px; left: 500px;"src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg">
+                    <p style="color: white; position: absolute; top: 120px; left: 640px; height: 8px;">|</p
+                    
+                    <p></p>
+                    <p style="color: white; position: absolute; top: 120px; left: 780px;">|</p>
+                    <img style="position: absolute; left: 680px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/12032AF2C457BB634C4039A306C2C39420BF51EB.svg">
+
+                    <p style="color: white; position: absolute; top: 120px; left: 640px; height: 8px;">|</p>
+                    <img style="position: absolute; left: 800px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/8F9B499DDC670821F87C474721CA954C0C1AD3F5.svg">
+                    
+                </a>
+    </footer>
+    <!-- === END OF NEW FOOTER SECTION === -->      
 </body>
+
+<script>
+
+
+    
+</script>
 
 {% endblock %}
 
