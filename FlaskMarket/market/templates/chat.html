@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+    <style>
+        body { background-color: rgb(236, 243, 255); }
+        .floating-window {
+            padding: 20px;
+            width: 600px;
+            background-color: rgba(209, 229, 236, 0.26);
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+            margin: 20px auto;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .alert-success { background-color: #d4edda; color: #155724; }
+    </style>
+    <div class="floating-window">
+        <h1>Chat with {% if current_user.role == 'farmer' %}Vets{% else %}Farmers{% endif %}</h1>
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.receiver_id.label }} {{ form.receiver_id(class="form-control") }}
+            </div>
+            <div>
+                {{ form.content.label }} {{ form.content(class="form-control", rows=5) }}
+            </div>
+            <div>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        <h2>Sent Messages</h2>
+        {% for msg in sent %}
+            <div class="message">
+                <p><strong>To {{ msg.receiver.username }} ({{ msg.timestamp.strftime('%Y-%m-%d %H:%M') }}):</strong> {{ msg.content }}</p>
+            </div>
+        {% endfor %}
+        <h2>Received Messages</h2>
+        {% for msg in received %}
+            <div class="message">
+                <p><strong>From {{ msg.sender.username }} ({{ msg.timestamp.strftime('%Y-%m-%d %H:%M') }}):</strong> {{ msg.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
