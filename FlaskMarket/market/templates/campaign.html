@@ -1,0 +1,65 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %}Vet Campaigns{% endblock %}
+{% block content %}
+    <style>
+        body { background-color: rgb(236, 243, 255); }
+        .floating-window {
+            padding: 20px;
+            width: 800px;
+            background-color: rgba(209, 229, 236, 0.26);
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+            margin: 20px auto;
+        }
+        .campaign {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .alert-success { background-color: #d4edda; color: #155724; }
+    </style>
+    <div class="floating-window">
+        <h1>Nearby Veterinary Campaigns</h1>
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+        {% if current_user.role == 'vet' %}
+            <h2>Post a Campaign</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.title.label }} {{ form.title(class="form-control") }}
+                </div>
+                <div>
+                    {{ form.description.label }} {{ form.description(class="form-control", rows=5) }}
+                </div>
+                <div>
+                    {{ form.location.label }} {{ form.location(class="form-control") }}
+                </div>
+                <div>
+                    {{ form.date.label }} {{ form.date(class="form-control") }}
+                </div>
+                <div>
+                    {{ form.organizer.label }} {{ form.organizer(class="form-control") }}
+                </div>
+                <div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        {% endif %}
+        <h2>Upcoming Campaigns</h2>
+        {% for campaign in campaigns %}
+            <div class="campaign">
+                <h3>{{ campaign.title }}</h3>
+                <p><strong>Organizer:</strong> {{ campaign.organizer }}</p>
+                <p><strong>Location:</strong> {{ campaign.location }}</p>
+                <p><strong>Date:</strong> {{ campaign.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                <p>{{ campaign.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
