@@ -211,3 +211,215 @@
         background-size: cover;
     }
 </style>
+<!-- Chart Modal -->
+    <div id="chartModal" class="chart-modal">
+        <h3 id="chartTitle"></h3>
+        <div id="analyticsChart" style="width: 600px; height: 400px;"></div>
+        <button id="exportChartBtn" class="btn btn-secondary" style="margin-top: 10px; display: none;">Export Chart</button>
+        <button id="closeChartBtn" class="btn btn-secondary">Close</button>
+    </div>
+    <div id="chartOverlay" class="chart-overlay"></div>
+
+    <script>
+        // Register Syncfusion License (replace with your actual license key)
+        ej.base.registerLicense('YOUR_LICENSE_KEY');
+
+        // Define animalName for AJAX requests
+        const animalName = "{{ animal | safe }}";
+
+        // Chart variables
+        let chart = null;
+        const chartModal = document.getElementById("chartModal");
+        const chartOverlay = document.getElementById("chartOverlay");
+        const chartTitle = document.getElementById("chartTitle");
+        const closeChartBtn = document.getElementById("closeChartBtn");
+
+        // Function to show chart with AJAX data fetching
+        async function showChart(chartType, ageRange) {
+            if (chart) {
+                chart.destroy();
+            }
+
+            // Fetch chart data via AJAX
+            const response = await fetch(`/api/chart_data/${animalName}/${chartType}/${ageRange}`);
+            const chartData = await response.json();
+
+            if (response.status !== 200) {
+                alert("Error fetching chart data: " + chartData.error);
+                return;
+            }
+
+            let chartConfig = {};
+
+            if (chartType === "feeds") {
+                chartTitle.textContent = `Feed Types for Age Range: ${ageRange}`;
+                chartConfig = {
+                    primaryXAxis: { title: "Feed Type", valueType: "Category" },
+                    primaryYAxis: { title: "Quantity per Day", labelFormat: "{value}" },
+                    series: [
+                        {
+                            type: "StackingColumn",
+                            dataSource: chartData.map(d => ({
+                                feed_type: d.feed_type,
+                                quantity: parseFloat(d.quantity_per_day) || 0
+                            })),
+                            xName: "feed_type",
+                            yName: "quantity",
+                            name: "Feed",
+                            fill: "#1abc9c",
+                            tooltipMappingName: "feed_type"
+                        }
+                    ],
+                    tooltip: { enable: true },
+                    legendSettings: { visible: true }
+                };
+            } else if (chartType === "vaccines") {
+                chartTitle.textContent = `Vaccination Schedule for Age Range: ${ageRange}`;
+                chartConfig = {
+                    primaryXAxis: { title: "Vaccine", valueType: "Category" },
+                    primaryYAxis: { title: "Presence", minimum: 0, maximum: 1, interval: 1 },
+                    series: [
+                        {
+                            type: "Column",
+                            dataSource: chartData.map(d => ({
+                                vaccine: d.vaccine_name,
+                                presence: 1
+                            })),
+                            xName: "vaccine",
+                            yName: "presence",
+                            name: "Vaccines",
+                            fill: "#e74c3c",
+                            tooltipMappingName: "vaccine"
+                        }
+                    ],
+                    tooltip: { enable: true },
+                    legendSettings: { visible: false }
+                };
+            } else if (chartType === "diseases") {
+                chartTitle.textContent = `Diseases for Age Range: ${ageRange}`;
+                chartConfig = {
+                    primaryXAxis: { title: "Disease", valueType: "Category" },
+                    primaryYAxis: { title: "Presence", minimum: 0, maximum: 1, interval: 1 },
+                    series: [
+                        {
+                            type: "Column",
+                            dataSource: chartData.map(d => ({
+                                disease: d.disease_name,
+                                presence: 1
+                            })),
+                            xName: "disease",
+                            yName: "presence",
+                            name: "Diseases",
+                            fill: "#f39c12",
+                            tooltipMappingName: "disease"
+                        }
+                    ],
+                    tooltip: { enable: true },
+                    legendSettings: { visible: false }
+                };
+            } else if (chartType === "feed_intake") {
+                chartTitle.textContent = `Expected Feed Intake for Age Range: ${ageRange}`;
+                chartConfig = {
+                    primaryXAxis: { title: "Age Range", valueType: "Category" },
+                    primaryYAxis: { title: "Feed Intake (kg/day)", labelFormat: "{value} kg" },
+                    series: [
+                        {
+                            type: "Line",
+                            dataSource: chartData.map(d => ({
+                                age_range: d.age_range,
+                                intake: d.expected_intake
+                            })),
+                            xName: "age_range",
+                            yName: "intake",
+                            name: "Feed Intake",
+                            fill: "#9b59b6",
+                            tooltipMappingName: "age_range",
+                            marker: { visible: true }
+                        }
+                    ],
+                    tooltip: { enable: true },
+                    legendSettings: { visible: false },
+                    zoomSettings: { enableSelectionZooming: true, enablePinchZooming: true }
+                };
+            } else if (chartType === "produce") {
+                chartTitle.textContent = `Expected Produce for Age Range: ${ageRange}`;
+                chartConfig = {
+                    series: [
+                        {
+                            type: "Pie",
+                            dataSource: chartData.map(d => ({
+                                product_type: d.product_type,
+                                amount: d.expected_amount
+                            })),
+                            xName: "product_type",
+                            yName: "amount",
+                            name: "Produce",
+                            fill: "#3498db",
+                            tooltipMappingName: "product_type",
+                            dataLabel: { visible: true, position: "Outside" }
+                        }
+                    ],
+                    tooltip: { enable: true },
+                    legendSettings: { visible: true }
+                };
+            }
+
+            chart = new ej.charts.Chart(chartConfig);
+            chart.appendTo("#analyticsChart");
+
+            chartModal.style.display = "block";
+            chartOverlay.style.display = "block";
+            const exportBtn = document.getElementById("exportChartBtn");
+            exportBtn.style.display = "block";
+            exportBtn.onclick = () => chart.exportModule.export("PNG", "AnalyticsChart");
+        }
+
+        // Event listeners
+        document.addEventListener("DOMContentLoaded", function () {
+            // Chart button listeners
+            const chartButtons = document.querySelectorAll(".show-chart-btn");
+            chartButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const chartType = this.getAttribute("data-chart-type");
+                    const ageRange = this.getAttribute("data-age-range");
+                    showChart(chartType, ageRange);
+                });
+            });
+
+            // Close chart modal
+            closeChartBtn.addEventListener("click", function () {
+                chartModal.style.display = "none";
+                chartOverlay.style.display = "none";
+                document.getElementById("exportChartBtn").style.display = "none";
+                if (chart) {
+                    chart.destroy();
+                }
+            });
+
+            chartOverlay.addEventListener("click", function () {
+                chartModal.style.display = "none";
+                chartOverlay.style.display = "none";
+                document.getElementById("exportChartBtn").style.display = "none";
+                if (chart) {
+                    chart.destroy();
+                }
+            });
+
+            // Age Range Filter
+            const ageRangeFilter = document.getElementById("ageRangeFilter");
+            const ageRangeCards = document.querySelectorAll(".age-range-card");
+
+            ageRangeFilter.addEventListener("change", function () {
+                const selectedAgeRange = this.value;
+                ageRangeCards.forEach(card => {
+                    if (selectedAgeRange === "all" || card.getAttribute("data-age-range") === selectedAgeRange) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
