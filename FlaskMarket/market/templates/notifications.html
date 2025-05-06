@@ -1,0 +1,243 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Livestock Analytics</title>
+    <style>
+        body {
+            background-color: #f5f6e9;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: rgb(2, 26, 2);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            display: inline-block;
+        }
+        .home-link {
+            float: right;
+            color: #dcedc8;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .home-link:hover {
+            background-color: #388e3c;
+        }
+        .floating-window {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-image: url("https://6272027.fs1.hubspotusercontent-na1.net/hub/6272027/hubfs/Im%C3%A1genes/aumenta-la-rentabilidad.jpeg?width=1440&name=aumenta-la-rentabilidad.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 2px solid #8d6e63;
+        }
+        .floating-window::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(100, 73, 13, 0.25);
+            border-radius: 10px;
+            z-index: 1;
+        }
+        .floating-window > * {
+            position: relative;
+            z-index: 2;
+        }
+        .floating-window h1 {
+            font-size: 28px;
+            color: #2e7d32;
+            margin: 0 0 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .clear-all-btn {
+            background-color: rgb(15, 92, 95);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto 20px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .clear-all-btn:hover {
+            background-color: #b71c1c;
+        }
+        .notification {
+            background-color: #fffde7;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .notification.unread {
+            background-color: #e8f5e9;
+            font-weight: bold;
+            transform: scale(1.02);
+        }
+        .notification.vet {
+            border-left-color: #0288d1;
+        }
+        .notification.animal {
+            border-left-color: #5d4037;
+        }
+        .notification.platform {
+            border-left-color: #fbc02d;
+        }
+        .notification.tip {
+            border-left-color: #26a69a;
+        }
+        .notification.tip_confirmation {
+            border-left-color: #ab47bc;
+        }
+        .notification.login {
+            border-left-color: #4caf50;
+        }
+        .notification.account {
+            border-left-color: #ff9800;
+        }
+        .notification.appointment {
+            border-left-color: #008080;
+        }
+        .notification.vet_added {
+            border-left-color: #ff5722; /* Deep orange for vet added confirmation */
+        }
+        .notification.new_vet {
+            border-left-color: #673ab7; /* Deep purple for new vet notifications */
+        }
+        .notification-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        .notification-content {
+            flex-grow: 1;
+        }
+        .notification-content p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .notification-time {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .mark-read-btn {
+            background: none;
+            border: 1px solid #2e7d32;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        .mark-read-btn:hover {
+            background-color: #2e7d32;
+            color: white;
+        }
+        .no-notifications {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            padding: 20px;
+        }
+        @media (max-width: 600px) {
+            .floating-window {
+                width: 90%;
+                margin: 10px auto;
+                padding: 15px;
+            }
+            .notification {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .mark-read-btn {
+                margin-top: 10px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
+            .home-link {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Notification Display</h1>
+        <a href="{{ url_for('home_page') }}" class="home-link">Back to Home</a>
+    </header>
+    <div class="floating-window">
+        {% if notifications %}
+            <form action="{{ url_for('clear_notifications') }}" method="POST">
+                <button type="submit" class="clear-all-btn">Clear Read Notifications</button>
+            </form>
+        {% endif %}
+        {% for notification in notifications %}
+            <div class="notification {% if not notification.read %}unread{% endif %} {{ notification.category|default('') }}">
+                <span class="notification-icon">
+                    {% if notification.category == 'vet' %}🩺
+                    {% elif notification.category == 'animal' %}🐄
+                    {% elif notification.category == 'platform' %}📢
+                    {% elif notification.category == 'tip' %}💡
+                    {% elif notification.category == 'tip_confirmation' %}✅
+                    {% elif notification.category == 'login' %}🔐
+                    {% elif notification.category == 'account' %}👤
+                    {% elif notification.category == 'appointment' %}📅
+                    {% elif notification.category == 'vet_added' %}🎉
+                    {% elif notification.category == 'new_vet' %}🩺
+                    {% else %}📩{% endif %}
+                </span>
+                <div class="notification-content">
+                    <p>{{ notification.content }}</p>
+                    <span class="notification-time">{{ notification.created_at.strftime('%b %d, %Y %I:%M %p') }}</span>
+                </div>
+                {% if not notification.read %}
+                    <form action="{{ url_for('mark_read', id=notification.id) }}" method="POST">
+                        <button type="submit" class="mark-read-btn">Mark as Read</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% if not notifications %}
+            <p class="no-notifications">No notifications available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
