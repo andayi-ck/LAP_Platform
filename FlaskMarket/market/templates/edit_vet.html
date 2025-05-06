@@ -1,0 +1,155 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Vet Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #f39c12; /* Orange color to match the image */
+        }
+        .rating-display::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828884.png'); /* Star icon */
+            background-size: cover;
+        }
+        .submit-btn {
+            background-color: #D2B48C;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #C19A6B;
+        }
+        .go-home-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .go-home-btn:hover {
+            background-color: #45a049;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-messages .error {
+            color: red;
+        }
+        .flash-messages .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Vet Profile</h2>
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('edit_vet', vet_id=vet.vet_id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label }}
+                {{ form.name() }}
+            </div>
+            <div class="form-group">
+                {{ form.specialty.label }}
+                {{ form.specialty() }}
+            </div>
+            <div class="form-group">
+                {{ form.clinic.label }}
+                {{ form.clinic() }}
+            </div>
+            <div class="form-group">
+                {{ form.experience.label }}
+                {{ form.experience() }}
+            </div>
+            <div class="form-group">
+                {{ form.availability.label }}
+                {{ form.availability() }}
+            </div>
+            <div class="form-group">
+                {{ form.accepting.label }}
+                {{ form.accepting() }}
+            </div>
+            <div class="form-group">
+                {{ form.image_url.label }}
+                {{ form.image_url(placeholder="Enter image URL (optional)") }}
+            </div>
+            <div class="form-group">
+                {{ form.rating_score.label }}
+                <div class="rating-display">
+                    {{ form.rating_score() }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.review_count.label }}
+                {{ form.review_count() }}
+            </div>
+            <div class="form-group">
+                {{ form.reviews.label }}
+                {{ form.reviews(placeholder="e.g., Highly recommended! Great with small animals.") }}
+            </div>
+            <button type="submit" class="submit-btn">Update Profile</button>
+            <a href="{{ url_for('livestock_dashboard') }}" class="go-home-btn">Go Home</a>
+        </form>
+    </div>
+</body>
+</html>
