@@ -1,0 +1,44 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Info</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tips.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add General Info</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.title.label }}<br>
+                {{ form.title(size=50) }}<br>
+                {% for error in form.title.errors %}
+                    <span class="error">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.content.label }}<br>
+                {{ form.content(rows=5, cols=50) }}<br>
+                {% for error in form.content.errors %}
+                    <span class="error">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.category.label }}<br>
+                {{ form.category() }}<br>
+                {% for error in form.category.errors %}
+                    <span class="error">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+</body>
+</html>
