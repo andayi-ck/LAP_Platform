@@ -655,6 +655,38 @@ def add_vet():
     
     return render_template('add_vet.html', form=form)
     
+
+
+    
+@app.route('/edit_vet/<vet_id>', methods=['GET', 'POST'])
+@login_required
+def edit_vet(vet_id):
+    vet = Vet.query.filter_by(vet_id=vet_id, user_id=current_user.id).first()
+    if not vet:
+        flash('Vet profile not found or you do not have permission to edit it.', 'error')
+        return redirect(url_for('vet_dashboard'))
+
+    form = VetForm(obj=vet)
+    if form.validate_on_submit():
+        vet.name = form.name.data
+        vet.specialty = form.specialty.data
+        vet.clinic = form.clinic.data
+        vet.experience = int(form.experience.data)
+        vet.availability = form.availability.data
+        vet.accepting = form.accepting.data
+        vet.rating_score = form.rating_score.data
+        vet.review_count = form.review_count.data
+        vet.rating = f"{form.rating_score.data} ({form.review_count.data} reviews)"  # Update rating string
+        vet.image_url = form.image_url.data or "https://via.placeholder.com/300x150"
+        vet.reviews = form.reviews.data or ""
+
+        db.session.commit()
+        flash('Vet profile updated successfully!', 'success')
+        return redirect(url_for('list_vets'))
+
+    return render_template('edit_vet.html', form=form, vet=vet)
+    
+    
     
 
     
