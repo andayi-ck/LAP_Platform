@@ -497,6 +497,90 @@ def book_appointment():
         db.session.rollback()
         app.logger.error(f"Error booking appointment: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+
+def send_vet_confirmation_email(email_receiver, vet_name):
+    subject = 'Vet Profile Added - Livestock Management System'
+    body = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }}
+            .container {{
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }}
+            .header {{
+                text-align: center;
+                padding: 20px 0;
+                background-color: #D2B48C;
+                color: white;
+                border-radius: 8px 8px 0 0;
+            }}
+            .header h1 {{
+                margin: 0;
+                font-size: 24px;
+            }}
+            .content {{
+                padding: 20px;
+                color: #333;
+            }}
+            .content p {{
+                line-height: 1.6;
+                margin: 10px 0;
+            }}
+            .footer {{
+                text-align: center;
+                padding: 10px;
+                font-size: 12px;
+                color: #777;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestock.png?width=115&height=70&name=livestock.png" alt="Livestock Management" style="max-width: 150px;">
+                <h1>Livestock Management System</h1>
+            </div>
+            <div class="content">
+                <p>Hello {vet_name},</p>
+                <p>Your vet profile has been successfully added to the Livestock Management System!</p>
+                <p>You can now be discovered by farmers and pet owners looking for veterinary services. Log in to manage your profile and appointments.</p>
+            </div>
+            <div class="footer">
+                <p>© 2025 Livestock Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    em = EmailMessage()
+    em['From'] = email_sender
+    em['To'] = email_receiver
+    em['Subject'] = subject
+    em.set_content(body, subtype='html')
+
+    context = ssl.create_default_context()
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, EMAIL_PASSWORD)
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+        app.logger.info(f"Vet confirmation email sent to {email_receiver}")
+    except Exception as e:
+        app.logger.error(f"Email error: {str(e)}")
+        raise
     
 
     
