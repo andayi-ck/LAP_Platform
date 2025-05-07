@@ -448,3 +448,55 @@ def symptom_checker():
 def connect_farmers():
     farmers = Farmer.query.all()
     return render_template('connect-farmers.html', farmers=farmers)
+
+
+@app.route('/book_appointment', methods=['POST'])
+@login_required
+def book_appointment():
+    try:
+        data = request.get_json()
+        vet_id = data.get('vetId')
+        vet_name = data.get('vetName')
+        appointment_date = data.get('appointmentDate')
+        appointment_time = data.get('appointmentTime')
+        animal_type = data.get('animalType')
+        owner_name = data.get('ownerName')
+        owner_email = data.get('ownerEmail')
+
+        # Validate required fields
+        if not all([vet_id, vet_name, appointment_date, appointment_time, animal_type, owner_name, owner_email]):
+            return jsonify({'error': 'Missing required fields'}), 400
+
+        # Save the appointment
+        appointment = Appointment(
+            vet_id=int(vet_id),
+            vet_name=vet_name,
+            appointment_date=appointment_date,
+            appointment_time=appointment_time,
+            animal_type=animal_type,
+            owner_name=owner_name,
+            owner_email=owner_email,
+            user_id=current_user.id
+        )
+        db.session.add(appointment)
+
+        # Create a notification for the user
+        notification = Notification(
+            content=f"Appointment booked with {vet_name} on {appointment_date} at {appointment_time} for your {animal_type}",
+            category='appointment',
+            user_id=current_user.id
+        )
+        db.session.add(notification)
+        db.session.commit()
+
+        # Send confirmation email
+        send_appointment_email(owner_email, vet_name, appointment_date, appointment_time, animal_type, owner_name)
+
+        return jsonify({'message': 'Appointment booked successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Error booking appointment: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+    
+
+    
