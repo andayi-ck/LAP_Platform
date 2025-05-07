@@ -1,6 +1,10 @@
 
 
 
+
+
+
+
 {% extends 'base.html' %}
 {% block title %}
     LIVESTOCK MANAGEMENT SYSTEM
@@ -50,8 +54,8 @@
         .custom-hr-hr {
             position: absolute; /* Adjust position if needed */
             top: 260px;         /* Distance from the top */
-            left: 260px;         /* Distance from the left */
-            width: 50%;         /* Length of the line */
+            left: 380px;         /* Distance from the left */
+            width: 40%;         /* Length of the line */
             height: 2px;        /* Thickness */
             background-color:rgb(202, 169, 60); /* Change to any color */
             border-radius: 10px; /* Makes the edges round */
@@ -86,9 +90,11 @@
             margin: 20px auto;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
-            top: 330px;
-            left: 260px;
+        top: 328px;
+        left: 340px;
             position: absolute;
+
+            z-index: 20; /* Added to ensure card is above floating windows */
         }
 
         /* Hover Effect: Card lifts up with stronger shadow */
@@ -107,6 +113,8 @@
         .animal-info {
             padding: 15px;
             border-radius: 10px;
+
+            
         }
 
         /* Animal Name */
@@ -161,7 +169,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 330px;
-            left: 456px;
+        left: 536px;
             position: absolute;
         }
 
@@ -235,7 +243,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 330px;
-            left: 660px;
+        left: 726px;
             position: absolute;
         }
         .image-container {
@@ -318,7 +326,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 330px;
-            left: 860px;
+        left: 920px;
             position: absolute;
         }
 
@@ -397,7 +405,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 630px;
-            left: 860px;
+        left: 920px;
             position: absolute;
         }
 
@@ -472,7 +480,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 630px;
-            left: 260px;
+        left: 340px;
             position: absolute;
         }
 
@@ -555,7 +563,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 630px;
-            left: 460px;
+        left: 534px;
             position: absolute;
         }
 
@@ -628,7 +636,7 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             cursor: pointer;
             top: 630px;
-            left: 660px;
+        left: 724px;
             position: absolute;
         }
 
@@ -686,7 +694,7 @@
 
         .sidebar {
             width: 250px;
-            height: 76vh;
+        height: 44vh;
             background-color:rgb(248, 231, 215); /* Dark Blue */
             position: absolute;
             border-radius: 10px;
@@ -794,8 +802,745 @@
         }
 
 
+    .notification-bell {
+        position: absolute;
+        top: 360px;
+        left: 20px;
+        font-size: 24px;
+        text-decoration: none;
+        color: black;
+    }
+    .badge {
+        background: rgb(25, 28, 29);
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        position: relative;
+        top: -10px;
+        left: -5px;
+    }
+    .ringing {
+        animation: ring 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes ring {
+        0% { transform: rotate(-15deg); }
+        100% { transform: rotate(15deg); }
+    }
 
+
+    .floating-windows-container {
+        width: 90%;
+        max-width: 550px;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        position: absolute;
+        top: 400px;
+        left: 10px;
+
+            z-index: 10; /* Added to set base stacking context, below animal-card */
+
+    }
+
+    .floating-window {
+        width: 100%;
+        max-width: 300px;
+        padding: 12px;
+            border-radius: 0px 20px 0px 20px; /* Curve top and bottom edges */
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        position: relative;
+            transition: opacity 0.8s ease, background-color 0.8s ease; /* Added opacity transition for fade effect */
+            opacity: 0; /* Initially invisible */
+            min-height: 150px; /* Added to ensure space is reserved when hidden */
+            
+            pointer-events: none; /* Added to allow clicks through when hidden */
+
+            /* Dynamic background color set via JavaScript with gradient overlay */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+    }
+
+    .floating-window.tips-window {
+            border-radius: 10px 0px 0px 0px; /* Curved top/bottom */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 2px 2px 8px rgba(0, 0, 0, 0.15); /* Strong shadow */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); /* Gradient overlay */
+            
+        border: 1px solid rgb(235, 248, 236);
+            /* Background color set dynamically via JavaScript */
+    }
+
+    .floating-window.visible {
+            opacity: 1; /* Visible state for fade-in */
+            visibility: visible; /* Added to ensure element remains in layout */
+
+            pointer-events: auto; /* Added to allow interaction when visible */
+    }
+
+    .floating-window.general-info-window {
+            border-radius: 0px 0 0px 10px; /* Curved left edge */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 1px 1px 4px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.15)); /* Vertical gradient */
+
+            border: 1px solidrgb(207, 198, 194);
+            /* Background color set dynamically via JavaScript */
+        }
+
+        .floating-window.visible {
+            opacity: 1; /* Visible state for fade-in */
+        }
+
+
+
+        /* Folded corner for tips window (bottom-right) */
+    .floating-window.tips-window::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), transparent);
+        border-bottom-right-radius: 20px;
+        box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.15);
+        transform: rotate(-45deg);
+        transform-origin: bottom right;
+    }
+
+        /* Folded corner for general info window (top-left) */
+    .floating-window.general-info-window::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(225deg, rgba(0, 0, 0, 0.2), transparent);
+        border-top-left-radius: 20px;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+        transform: rotate(45deg);
+        transform-origin: top left;
+    }
+
+    .floating-window.tips-window h2 {
+        font-size: 20px;
+        font-weight: bold;
+        font-style: italic;
+            color: #4caf50; /* Green */
+        text-decoration: underline;
+        text-transform: uppercase;
+        margin: 0 0 8px;
+        text-align: center;
+    }
+
+    .floating-window.general-info-window h2 {
+        font-size: 20px;
+        font-style: italic;
+            color: #2196f3; /* Blue */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        margin: 0 0 8px;
+        text-align: center;
+    }
+
+
+    .floating-window hr {
+        border: 0;
+        height: 1px;
+        background: #ccc;
+        margin: 8px 0;
+    }
+
+    #tips-container, #general-info-container {
+        max-height: 120px;
+        overflow-y: auto;
+        padding: 5px;
+        opacity: 1;
+        transition: opacity 0.8s ease;
+    }
+
+    #tips-container.fade, #general-info-container.fade {
+        opacity: 0;
+    }
+
+    .tip-item, .info-item {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-left: 3px solid #4caf50;
+        border-radius: 4px;
+        padding: 8px;
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+    .tip-item h3, .info-item h3 {
+        margin: 0 0 4px;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .tip-item p, .info-item p {
+        margin: 0 0 4px;
+        line-height: 1.3;
+    }
+
+    .tip-meta, .info-meta {
+        color: #666;
+        font-size: 11px;
+        display: block;
+    }
+
+    .loading, .error, .no-info {
+        text-align: center;
+        color: #666;
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .error {
+        color: #b71c1c;
+    }
+
+
+        
+        
+    .form-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 6px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-container h2 {
+        font-size: 20px;
+        color: #4caf50;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .form-container label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    .form-container input[type="text"],
+    .form-container textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .form-container textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-container input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .form-container input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    .form-container .error {
+        color: #b71c1c;
+        font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .floating-windows-container, .form-container {
+            padding: 0 8px;
+        }
+        .floating-window {
+            max-width: 40%;
+            position: absolute;
+            top: 300px;
+        }
+    }
+
+
+    /* === NEW CSS FOR FOOTER SECTION === */
+    .footer {
+        #background-color:rgba(5, 44, 20, 0.93);
+        background-color:  #1F3A40;
+        #background-color:rgb(6, 23, 44); /* Dark brown color */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        width: 1410px;
+        left: -120px;
+        z-index: 5;
+        font-family: 'Montserrat', sans-serif;
+        position: absolute;
+        top: 1950px;
+        height: 300px;
+    }
+
+    .footer a {
+        color: #FFD700; /* Gold color for links */
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    .footer a:hover {
+        color: #FF4500; /* Orange-red on hover */
+    }
+
+    .footer p {
+        margin: 5px 0;
+    }
+    /* === END OF NEW CSS === */
+
+    .bj-button{
+
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+
+        transition: none;
+        border-radius: 6px;
+
+        position: relative;
+        border: none;
+        border-radius: 3px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0 30px;
+        min-width: 44px;
+        height: 44px;
+        font-size: 15px;
+        line-height: 44px;
+        transition: .25s linear;
+        background: #336aea;
+        color: #fff;
+
+    }
+    .bj-button--green.bj-button--outline{
+        background: transparent;
+        box-shadow: inset 0 0 0 2px #3b9e62;
+        color: #3b9e62;
+    }
+    .bj-button--green {
+        background: #44b678;
+        color: #fff;
+    }
+    
+
+    .bj-button--sm {
+        padding: 0 20px;
+        min-width: 34px;
+        height: 34px;
+        font-size: 13px;
+        line-height: 34px;
+    }
+    .bj-button.track {
+        margin-right: -400px; /* Moves the button 20px to the left */
+    }
+
+    .bj-input {
+        /* Match the button's size and layout */
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 34px; /* Matches .bj-button--sm */
+        padding: 0 20px; /* Matches .bj-button--sm */
+        min-width: 34px; /* Matches .bj-button--sm */
+        font-size: 13px; /* Matches .bj-button--sm */
+        line-height: 34px; /* Matches .bj-button--sm */
+        
+        /* Match the button's typography */
+        font-weight: 600; /* Matches .bj-button */
+        
+        /* Match the button's border and color */
+        border: none; /* Matches .bj-button */
+        box-shadow: inset 0 0 0 2px #3b9e62; /* Matches .bj-button--green.bj-button--outline */
+        color: #3b9e62; /* Matches .bj-button--green.bj-button--outline */
+        
+        /* Set the background to white */
+        background: #fff; /* White background as requested */
+        
+        /* Match the button's border-radius */
+        border-radius: 3px; /* Matches .bj-button */
+        
+        /* Additional input-specific styling */
+        outline: none; /* Remove default input outline */
+        text-align: center; /* Matches .bj-button */
+        cursor: text; /* Ensure it behaves like an input field */
+        transition: .25s linear; /* Matches .bj-button */
+        margin-left: -140px;
+
+        position: relative; /* Enable relative positioning */
+        top: 0px; /* Moves it up by 20px */
+    }
+    
+    /* Optional: Style the placeholder to match the text color */
+    .bj-input::placeholder {
+        color: #3b9e62; /* Matches the input text color */
+        opacity: 0.7; /* Slightly lighter for placeholder */
+    }
+    .bj-input:focus {
+        box-shadow: inset 0 0 0 2px #2e7d4f; /* Slightly darker green on focus */
+    }
+    @media (max-width: 768px) {
+        .bj-input {
+            margin-left: 10px; /* Smaller shift on mobile */
+            top: -10px; /* Smaller upward shift on mobile */
+        }
+    }
+
+
+    
+    .demo-container {
+        display: flex;
+        width: 1000px;
+        height: 420px;
+        margin: auto;
+        background: #e9f4f9;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        top: 40px;
+        left: 80px;
+    }
+    
+    .demo-left,
+    .demo-right {
+        padding: 2rem;
+    }
+    
+    .demo-left {
+        display: flex;
+        gap: 1.5rem;
+        
+    }
+
+    .demo-right {
+        width: 300px;
+        height: 450px;
+        position: absolute;
+        top: 0px;
+        left: 700px;
+
+
+        flex: 4;
+        background: #d8eaf1;
+        text-align: center;
+        border-left: 1px solid #b3d4e0;
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        border-radius: 0 16px 16px 0;
+    }
+    
+    .demo-image-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 60px;
+
+        flex: 0 0 160px; /* fixed width image wrapper */
+        
+    }
+    
+    .demo-image-frame {
+        background:rgb(238, 235, 228);
+        padding: 10px;
+        border-radius: 50%;
+        width: 148px;
+        height: 148px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 60% 20% 60% 60%; /* Custom asymmetric radius: TL, TR, BR, BL */
+        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .demo-image-frame img {
+        width: 128%;
+        height: 128%;
+        object-fit: cover;
+        border-radius: 60% 20% 60% 60%; /* Custom asymmetric radius: TL, TR, BR, BL */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        
+    }
+    
+    .demo-text {
+        width: 740px;
+    }
+    
+    .demo-text h2 {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+        color: #0c2544;
+        position: absolute;
+        left: 240px;
+        top: 60px;
+        font-weight: 650;
+        word-spacing: 3px;
+        line-height: 2.0rem;
+        
+    }
+    
+    .bullet-points {
+        position: relative; /* Make this the positioning context for children */
+        width: 96%;
+        height: 120px; /* Add a fixed height to see the effect */
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+        margin-bottom: 1.5rem;
+        color:rgb(63, 106, 158);
+        font-weight: 500;
+    }
+
+    .bullet-points li {
+        list-style: disc;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        color: #0c2544;
+    }
+    
+    .demo-text h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #0c2544;
+        position: absolute;
+        top: 250px;
+        left: 20px;
+        word-spacing: 1px;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.9rem;
+        font-size: 0.95rem;
+        color: #0c2544;
+        position: absolute;
+        top: 300px;
+        font-size: 1.0rem;
+
+    }
+    
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    
+    .tick-icon {
+        width: 30px;
+        height: 22px;
+        background-color:rgb(7, 48, 92); /* Light blue like in your image */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .tick-icon svg {
+        width: 12px;
+        height: 12px;
+    }
+    
+    
+    .demo-right {
+        flex: 1;
+        background: #d8eaf1;
+        text-align: center;
+        border-left: 1px solid rgb(97, 236, 155);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 0 16px 16px 0;
+    }
+    
+    .register-now {
+        font-size: 1.05rem;
+        margin-bottom: 0.7rem;
+        color: #0c2544;
+        position: absolute;
+        top: 60px;
+        left: 40px;
+        line-height: 1.6rem;
+    }
+    
+    .date {
+        position: absolute;
+        top: 130px;
+        left: 40px;
+
+        font-size: 1.3rem;
+        margin: 0;
+        color: #0c2544;
+        line-height: 1.8rem;
+    }
+    
+    .time {
+        position: absolute;
+        top: 190px;
+        left: 70px;
+
+        font-size: 0.95rem;
+        color: #0c2544;
+        margin-bottom: 1rem;
+    }
+    
+    .countdown {
+        font-size: 1.4rem;
+        color: #e53935;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: absolute;
+        top: 230px;
+        left: 50px;
+    }
+
+    .register-button {
+        background-color: #00c389;
+        color: white;
+        border: none;
+        padding: 0.8rem 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: background 0.3s ease;
+        position: absolute;
+        top: 300px;
+        left: 70px;
+        line-height: 1.2rem;
+        width: 150px;
+        transition: none;
+    }
+    
+    .register-button:hover {
+        background-color: #00a674;
+    }
+
+
+    /* Base Dialog Styling */
+    .dialog {
+        position: fixed;
+        top: 1278px;
+        left: 2px;
+        width: 99.7%;
+        height: 60%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none; /* Initially hidden */
+        justify-content: center;
+        align-items: center;
+        z-index: 99990;
+        border-radius: 6px;
+    }
+
+    .dialog.show {
+        display: flex; /* Show when 'show' class is added */
+    }
+
+    .dialog-content {
+        background: white;
+        border-radius: 12px;
+        display: flex;
+        width: 700px;
+        max-width: 95%;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
+
+    /* Image in dialog */
+    .dialog-image {
+        width: 50%;
+        height: auto;
+        object-fit: cover;
+        margin-right: 20px;
+        border-radius: 8px;
+    }
+
+    /* Text and CTA */
+    .dialog-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        padding: 10px;
+    }
+
+    .dialog-text h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .dialog-text p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .cta-button {
+        padding: 12px 25px;
+        background-color: #ff6200;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        text-transform: uppercase;
+        align-self: center;
+        transition: none;
+    }
+
+    .cta-button:hover {
+        background-color: #e55a00;
+    }
+
+    /* Close Button */
+    .close-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        font-size: 20px;
+        background: #666;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    
     </style>
+
+    
 
     <body>
 
@@ -838,31 +1583,39 @@
             style="border: none; width: 180px; height: auto; position: relative; top: -40px; left: 1000px;">
 
 
+
+            
             <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-Alimentacion.png"
-                style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 100px; left: 280px;">
-            <p style="position: absolute; left: 300px; top: 200px;">Feeds</p>
+                style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 100px; left: 420px;">
+            <p style="position: absolute; left: 450px; top: 200px;">Feeds</p>
 
             <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-REPORTES.png"
-                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 440px;">
-            <p style="position: absolute; left: 440px; top: 200px;">Growth Pattern</p>
+                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 580px;">
+            <p style="position: absolute; left: 580px; top: 200px;">Growth Pattern</p>
 
 
             <img class="my-imageB mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/ipc-trazabilidad-1.png?width=206&name=ipc-trazabilidad-1.png"
-                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 600px;">
-            <p style="position: absolute; left: 600px; top: 200px;">Outbreak Alerts</p>
+                style="width: 100px; height: 100px; border-radius: 80%; object-fit: cover; position: absolute; top: 100px; left: 740px;">
+            <p style="position: absolute; left: 740px; top: 200px;">Outbreak Alerts</p>
 
+
+            <!--
             <img class="my-imageB mb-4" src="https://livestockanalytics.com/hubfs/ipc-maquila.png"
                 style="width: 100px; height: 100px; border-radius: 50%;  object-fit: cover; top: 100px; left: 760px; transition: transform 0.9s ease; position: absolute;">
             <p style="position: absolute; left: 760px; top: 200px;">Regular Reports</p>
 
+            -->
 
             <hr class="custom-hr-hr">
+
+            <img src="https://media.istockphoto.com/id/1325962116/photo/the-concept-of-processing-the-cultivation-of-an-agricultural-field-with-automated-machinery.webp?a=1&b=1&s=612x612&w=0&k=20&c=HuGPWNyiK1Bn3gptQN1G0j2bGsVXlqHH9HaYLj6HRbE="
+                style="border: none; position: absolute; top: 200px; left: 870px; width: 280px; height: 148px; z-index: -1; border-radius: 10px; opacity: 0.50;">
 
             <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 14px; left: 880px; top: 250px; position: absolute; font-family: 'Montserrat', sans-serif;">LAP-PLATFORM</p>
             <p class="text-left" style="font-weight: bold; color: chocolate; font-size: 38px; left: 880px; top: 260px; position: absolute; font-family: 'Nunito', sans-serif; font-size: 2.5rem;">DASHBOARD</p>
 
         
-            
+            <div class="card-container">
             <!-- Animal Card -->
             <div class="animal-card">
                 <img src="https://media.istockphoto.com/id/1034895924/photo/group-of-farm-animals.webp?a=1&b=1&s=612x612&w=0&k=20&c=0NcK9I48g5Uan3BtKjJsMKEhuAagd98kVl1xhFO53ZI=" alt="Farm Animals">
@@ -872,6 +1625,7 @@
                         <a href="{{ url_for('home2_page') }}" class="btn">Learn More</a>
                     </div>
             </div>
+            </div>
 
             <div class="card-container">
                 <!-- Animal Card 2-->
@@ -880,7 +1634,7 @@
                         <div class="animal-info-2" style="background-color:rgb(252, 246, 129)">
                             <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Discover variety of feeds and additives suitable for your animal</h3>
                             <p></p>
-                            <a href="{{ url_for('nearby_vets') }}" class="btn">Feeds & Additives</a>
+                        <a href="{{ url_for('livestock_dashboard') }}" class="btn">Feeds & Additives</a>
                         </div>
                 </div>
             <div>
@@ -946,7 +1700,7 @@
                         <div class="animal-info-7" style="background-color:rgb(245, 242, 188)">
                             <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Discover Variety of animal Species and Breed of any Livestock</h3>
                             <p></p>
-                            <a href="{{ url_for('livestock_dashboard') }}" class="btn">Species & Variety</a>
+                        <a href="{{ url_for('tips') }}" class="btn">Species & Variety</a>
                         </div>
                 </div>
             </div>
@@ -958,7 +1712,7 @@
                     <div class="animal-info-8" style="background: linear-gradient(140deg, rgba(3, 94, 139, .93), rgba(0, 203, 169, .73), rgba(0, 225, 80, .04)), linear-gradient(72deg, transparent, rgba(0, 225, 117, .64));">
                         <h3 style="color: black; font-family: 'Merriweather', sans-serif; font-size: 14px;">Track animal Health, Feed Intake, Habitat, Health and More.</h3>
                         <p></p>
-                        <a href="{{ url_for('connect_farmers') }}" class="btn">Dashboard</a>
+                        <a href="{{ url_for('tips') }}" class="btn">Dashboard</a>
                     </div>
                 </div>
             </div>
@@ -966,29 +1720,68 @@
             
 
         
-            
+            <a href="{{ url_for('livestock_dashboard') }}">
             <img class="menu-icon" onclick="toggleSidebar()" onmouseover="showTooltip()" onmouseout="hideTooltip()" src="https://cdn-icons-png.flaticon.com/128/3917/3917482.png" style="width: 30px; height: 30px;">
+            </a>
+            <a href="{{ url_for('tips') }}">
             <img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png" style="width: 30px; height: 30px; position: absolute; top: 240px; left: 20px;">
+            </a>
+            <a href="{{ url_for('add_vet') }}">
             <img src="https://cdn-icons-png.flaticon.com/128/3917/3917546.png" style="width: 30px; height: 30px; position: absolute; top: 300px; left: 20px;">
+            </a>
 
-            <img src="https://cdn-icons-png.flaticon.com/128/3917/3917132.png" style="width: 30px; height: 30px; position: absolute; top: 360px; left: 20px;">
+            <!-- Bell Icon -->
+            {% if current_user.is_authenticated %}
+            <a style="text-decoration: none;" href="{{ url_for('notifications') }}" class="notification-bell {% if unread_count %}ringing{% endif %}">
+                🔔
+                {% if unread_count %}
+                    <span class="badge">{{ unread_count }}</span>
+                {% endif %}
+            </a>
+            
+            {% else %}
+        
+            {% endif %}
 
 
-            <img src="https://media.istockphoto.com/id/1016286868/photo/agritech-concept-with-dairy-cows-in-cowshed-with-data-display.jpg?s=612x612&w=0&k=20&c=p3l_87rSWfvD9kpw6XM3FoJG1bnYpYoJntFpmjZ5KP8="
+            <!-- Floating Windows -->
+            <div class="floating-windows-container">
+                <div class="floating-window tips-window" id="tipWindow">
+                    <h2>Livestock Tip</h2>
+                    <hr>
+                    <div id="tips-container">
+                        <p class="loading">Loading tip...</p>
+                    </div>
+                </div>
+                <div class="floating-window general-info-window" id="generalTipWindow">
+                    <h2>General Info</h2>
+                    <hr>
+                    <div id="general-info-container">
+                        <p class="loading">Loading info...</p>
+                    </div>
+                </div>
+            </div>
+
+            
+
+
+
+            <img ="https://media.istockphoto.com/id/1016286868/photo/agritech-concept-with-dairy-cows-in-cowshed-with-data-display.jpg?s=612x612&w=0&k=20&c=p3l_87rSWfvD9kpw6XM3FoJG1bnYpYoJntFpmjZ5KP8="
             style="position: absolute; top: 200px; left: 870px; width: 280px; height: 150px; z-index: -12; border-radius: 10px; opacity: 0.70;">
             
-            <!-- Sidebar Navigation -->
+            
+        
+            <!--Sidebar Navigation
             <div class="sidebar" id="sidebar">
             <h2 style="color: chocolate; font-size: 1.8rem; top: 10px; font: bold; left: 60px; position: absolute;">LAP PLATFORM</h2>
                 <hr>
-                
                 <a href="{{ url_for('welcome_page') }}" style="position: absolute; top: 80px; left: 40px"><img src="https://cdn-icons-png.flaticon.com/128/18561/18561855.png" style="width: 22px; height: 22px; position: absolute; top: 7px; left: -20px;">Home</a>
                 <a href="{{ url_for('livestock_dashboard') }}" style="position: absolute; top: 120px; left: 40px;"><img class="menu-icon" onclick="toggleSidebar()" onmouseout="hideTooltip()" onmouseover="showTooltip" src="https://cdn-icons-png.flaticon.com/128/3917/3917762.png" style="width: 22px; height: 22px; position: absolute; top: 7px; left: -20px;">Dashboard</a>
-                <a href="#" style="position: absolute; top: 160px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png"style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Reports</a>
+                <a href="{{ url_for('tips')}}" style="position: absolute; top: 160px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3914/3914501.png"style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Reports</a>
                 <a href="\bottom" style="position: absolute; top: 200px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3917/3917051.png" style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Settings</a>
                 <a href="{{ url_for('register_page') }}" style="position: absolute; top: 240px; left: 40px;"><img src="https://cdn-icons-png.flaticon.com/128/3917/3917546.png" style="width: 22px; height: 22px; position: absolute; top: 8px; left: -20px;">Log-in/Register</a>
             </div>
-
+            -->
             
             <img src="https://media.istockphoto.com/id/1016287040/photo/smartphone-app-reading-dairy-cows-data-tag-agritech-concept.jpg?s=612x612&w=0&k=20&c=PRjF0X7J44JiQfVfsgWKtG8XaHyYX0lSSUc2cDihhvo="
             style="border: none; position: absolute; top: 848px; left: 0px; width: 246px; height: 152px; z-index: -1; border-radius: 10px; opacity: 0.80;">
@@ -997,31 +1790,6 @@
 
 
 
-            <!-- JavaScript for Sidebar Toggle -->
-            <script>
-                function toggleSidebar() {
-                    let sidebar = document.getElementById("sidebar");
-        
-                    // Toggle visibility and opacity
-                    if (sidebar.classList.contains("active")) {
-                        sidebar.classList.remove("active"); // Hide Sidebar
-                    } else {
-                        sidebar.classList.add("active"); // Show Sidebar
-                    }
-                }
-
-
-                function validateEmail() {
-                    let email = document.getElementById("emailInput").value;
-                    let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                  
-                    if (!regex.test(email)) {
-                        alert("Please enter a valid email address.");
-                        return false;
-                    }
-                    return true;
-                }
-            </script>
             
             
 
@@ -1029,7 +1797,7 @@
 
             <!--
             
-
+            <img src="https://images.unsplash.com/file-1719664968387-83d5a3f4d758image?w=416&dpr=2&auto=format&fit=crop&q=60">
             <img src="https://media.istockphoto.com/id/1345836558/photo/cow-with-rfid-chip-and-infographics.jpg?s=612x612&w=0&k=20&c=BThlqbT1eDuhk92MtFcJ9PLk6UOZmwL58jSFPM4WXL8=">
             <img src="https://media.istockphoto.com/id/1483439736/video/automated-egg-production.jpg?s=640x640&k=20&c=Ivx4cKfW_dOaj-vBiOonR11drSRKJidQwCEB4S5630Q=">
             <img src="https://media.istockphoto.com/id/1185486632/photo/vegetarian-and-cow.webp?a=1&b=1&s=612x612&w=0&k=20&c=uS5WTqWyOrIz9wwwQcFHDo1LiYpsAyzl38hZ9M6g7CI=">
@@ -1051,39 +1819,169 @@
 
 
     <div style="background: linear-gradient(to bottom, #D0E8FF, #87CEEB, #AEEEEE);
-        top: 1038px; width: 210vh; height: 500px; position: absolute; left: -58px;">
-        <div style="border-radius: 10px; left: 60px; width: 90%; height: 480px; top: 20px; position: absolute;
-        #background: linear-gradient(to bottom, #D0E8FF, #87CEEB, #AEEEEE);
-        background-image: url('https://6272027.fs1.hubspotusercontent-na1.net/hub/6272027/hubfs/Im%C3%A1genes/aumenta-la-rentabilidad.jpeg?width=1440&name=aumenta-la-rentabilidad.jpeg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat; color: white; padding: 20px; text-align: center;">
+        top: 1038px; width: 210vh; height: 1200px; position: absolute; left: -58px;">
+        <div style="border-radius: 10px; left: 60px; width: 90%; height: 600px; top: 60px; position: absolute;
+            #background: linear-gradient(to bottom, #D0E8FF, #87CEEB, #AEEEEE);
+            background-image: url('https://6272027.fs1.hubspotusercontent-na1.net/hub/6272027/hubfs/Im%C3%A1genes/aumenta-la-rentabilidad.jpeg?width=1440&name=aumenta-la-rentabilidad.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; color: white; padding: 20px; text-align: center;">
             <h3 style="font-size: 3rem; font-color: white; font-weight: bold;">
                 Journey Throughout the Life <br>of Your Livestock.
             </h3>
 
             <h4 id="bottom"></h4>
 
-            <div style="background: white; width: 100%; height: 300px;
-                top: 180px; position: absolute; left: 0px;">
-                <p style="color: black; position: absolute; top: 140px; left: 40px;">Contact Us:</p>
-
+            <div style="background: white; width: 100%; height: 600px;
+                top: 180px; position: absolute; left: 0px; border-radius: 6px;">
                 
                 
+                <!--<p style="color: black;">Sign up with email to get Regular Updates</p><br>
+                <form method="POST" class="form-register" action="{{ url_for('register_page') }}" style="position: absolute; top: 32px; left: 480px;">
+                    <input type="email" id="emailInput" name="email" placeholder="Enter email" style="padding: 8px; width: 180px; height: 34px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; position: absolute; top: -4px; left: -10px;">
+                    <button type="submit" style="position: absolute; top: -4px; left: 180px; padding: 8px 8px; background:rgba(13, 170, 209, 0.7); color: black; border: none; border-radius: 5px; cursor: pointer; width: 84px; height: 32px; text-align: center; line-height: 16px;">Email Us</button>
+                </form>
+                -->
 
+
+                <!--
                 <div class="copyright">
 
-                    
                     <img style="position: absolute; top: 120px; left: 496px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/L-tec.png?width=177&height=60&name=L-tec.png">
                     
                     <img style="position: absolute; top: 200px; left: 540px;" class="mb-4" src="https://livestockanalytics.com/hs-fs/hubfs/Logos%20e%20%C3%ADconos/livestock.png?width=115&height=70&name=livestock.png">
 
                 </div>
+                -->
+
+
+                <div class="demo-container">
+                    <div class="demo-left">
+                        <div class="demo-image-wrapper">
+                            <div class="demo-image-frame">
+                                <img src="https://images.unsplash.com/photo-1635094546284-a5055e8a37c2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxpdmVzdG9jayUyMGFubnVhbCUyMGV2ZW50fGVufDB8fDB8fHww" alt="Instructor" />
+                            </div>
+                        </div>
+                        <div class="demo-text">
+                            <h2>Attend a Free Livestock and<br>
+                                Farmer Summit Annual Event</h2>
+                            <ul class="bullet-points">
+                                <li style="position: absolute; top: 110px; left: 240px;">Learn about Best Livestock Farming pracices</li>
+                                <li style="position: absolute; top: 140px; left: 240px; font-weight: 540;">Attend & Gain vast Knowledge in Livestock Farming.</li>
+                            </ul>
+                            <h3>Earn Perks and Benefits from this Event to a farmer and their Livestock</h3>
+                            <div class="features">
+                                <div class="feature-item">
+                                    <span class="tick-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    </span>
+                                    Live Farmer-Led Session
+                                </div>
+                                <div class="feature-item">
+                                    <span class="tick-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    </span>
+                                    Know More about Livetsock in Depth
+                                </div>
+                                <div class="feature-item">
+                                    <span class="tick-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    </span>
+                                    Details on Best Animal Practices <br> & Technologies
+                                </div>
+                                <div class="feature-item">
+                                    <span class="tick-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    </span>
+                                    Learn about Domestic, Wild, <br> Aquatic Animals etc
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-right">
+                            <p class="register-now">Register for the upcoming <br>
+                                annual event now</p>
+
+                            <!--This below Time setting can be set with the script section
+                            below.Do so after changing here-->
+                            <h3 class="date">Wednesday, 23 Aug <br> 2027</h3>
+                            <p class="time">03:30 PM to 04:30 PM</p>
+                            <div class="countdown" id="countdown">
+                                <span>⏱</span> 00 : 00 : 00
+                            </div>
+                            <button class="register-button" id="register-button">REGISTER FOR <br> THIS EVENT</button>
+
+
+                            <div class="dialog" id="dialog">
+                                <div class="dialog-content">
+                                    <span class="close-btn" id="close-btn">×</span>
+                                    <!-- LEFT SIDE IMAGE -->
+                                    <img src="https://images.unsplash.com/photo-1635094546284-a5055e8a37c2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxpdmVzdG9jayUyMGFubnVhbCUyMGV2ZW50fGVufDB8fDB8fHww" alt="Person at computer" class="dialog-image">
+                        
+                                    <!-- RIGHT SIDE TEXT & BUTTON -->
+                                    <div class="dialog-text">
+                                        <h3>Attend and get a Certificate of Participation!</h3>
+                                        <p>Our Practical Learning Approach helps you learn the most in-demand tech skills and work on real-life projects.</p>
+                                        <button class="cta-button" id="close-dialog-btn">REGISTER FOR FREE DEMO</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+
+
+
+
+
+
+
+                            <div class="dialog" id="dialog">
+                                <div class="dialog-content">
+                                    <span class="close-btn" id="close-btn">×</span>
+                                    <!-- LEFT SIDE IMAGE -->
+                                    <img src="https://images.unsplash.com/photo-1635094546284-a5055e8a37c2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxpdmVzdG9jayUyMGFubnVhbCUyMGV2ZW50fGVufDB8fDB8fHww" alt="Person at computer" class="dialog-image">
+                        
+                                    <!-- RIGHT SIDE TEXT & BUTTON -->
+                                    <div class="dialog-text">
+                                        <h3>Attend and get a Certificate of Participation!</h3>
+                                        <p>Our Practical Learning Approach helps you learn the most in-demand tech skills and work on real-life projects.</p>
+                                        <button class="cta-button">REGISTER FOR FREE DEMO</button>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                                <!-- OPTIONAL SCHOLARSHIP POPUP
+                                <div class="scholarship-popup">
+                                    <button class="close-btn">×</button>
+                                    <div class="gift-icon">🎁</div>
+                                        <div class="popup-content">
+                                            <strong>Attend Demo Session to Get Scholarship</strong>
+                                            <p>Click Here and Register Now to get 50% Scholarship on the Course Fees. Hurry, the offer is valid for a limited time only ⏳</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+
+                        
+
+                        </div>
+                    </div>
+                </div>
+
 
                 
+
             </div>
         </div>
     </div>
+
 
     <!-- === NEW FOOTER SECTION === -->
     <footer class="footer">
@@ -1114,28 +2012,349 @@
 
 
                 <a href="tel:+254115513070">
-                    <img style="position: absolute; top: 120px; left: 500px;"src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg">
-                    <p style="color: white; position: absolute; top: 120px; left: 640px; height: 8px;">|</p
+                    <img style="position: absolute; top: 120px; left: 590px;"src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg">
+                    <p style="color: white; position: absolute; top: 120px; left: 726px; height: 8px;">|</p
                     
                     <p></p>
-                    <p style="color: white; position: absolute; top: 120px; left: 780px;">|</p>
-                    <img style="position: absolute; left: 680px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/12032AF2C457BB634C4039A306C2C39420BF51EB.svg">
+                    <p style="color: white; position: absolute; top: 120px; left: 774px;">|</p>
+                    <img style="position: absolute; left: 790px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/12032AF2C457BB634C4039A306C2C39420BF51EB.svg">
 
-                    <p style="color: white; position: absolute; top: 120px; left: 640px; height: 8px;">|</p>
-                    <img style="position: absolute; left: 800px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/8F9B499DDC670821F87C474721CA954C0C1AD3F5.svg">
+                    <img style="position: absolute; left: 740px; top: 124px;" src="https://d1ayxb9ooonjts.cloudfront.net/d/8F9B499DDC670821F87C474721CA954C0C1AD3F5.svg">
                     
                 </a>
     </footer>
-    <!-- === END OF NEW FOOTER SECTION === -->      
-</body>
-
-<script>
+    <!-- === END OF NEW FOOTER SECTION === -->
 
 
     
+
+
+
+
+<script>
+
+    function validateEmail() {
+        const emailInput = document.getElementById('emailInput').value;
+        if (!emailInput.toLowerCase().endsWith('@gmail.com')) {
+            alert('Please use a Gmail address to subscribe.');
+            return false;
+        }
+        return true;
+    }
+
+        
+        //JavaScript for Sidebar Toggle
+    function toggleSidebar() {
+        let sidebar = document.getElementById("sidebar");
+
+            // Toggle visibility and opacity
+        if (sidebar.classList.contains("active")) {
+                sidebar.classList.remove("active"); // Hide Sidebar
+        } else {
+                sidebar.classList.add("active"); // Show Sidebar
+        }
+    }
+
+
+        function validateEmail() {
+            let email = document.getElementById("emailInput").value;
+            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+            if (!regex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+            return true;
+        }
+
+
+        // dynamic badges updates
+    document.addEventListener('DOMContentLoaded', function() {
+        function updateNotificationBadge() {
+            const bell = document.querySelector('.notification-bell');
+            if (bell) {
+                fetch('/notifications/count')
+                    .then(response => response.json())
+                    .then(data => {
+                        let badge = document.querySelector('.badge');
+                        if (data.unread_count > 0) {
+                            if (!badge) {
+                                badge = document.createElement('span');
+                                badge.className = 'badge';
+                                bell.appendChild(badge);
+                            }
+                            badge.textContent = data.unread_count;
+                        } else if (badge) {
+                            badge.remove();
+                        }
+                    })
+                    .catch(error => console.error('Error fetching notification count:', error));
+            }
+        }
+
+        updateNotificationBadge();
+        setInterval(updateNotificationBadge, 30000);
+    });
+
+        // Color array for floating window background (5 distinct colors)
+    const colors = [
+            "rgba(255, 255, 255, 0.77)", // Blue
+            "rgba(227, 241, 253, 0.9)", // Red
+            "rgb(245, 245, 178)", // Green
+            "rgb(183, 209, 183)", // Yellow
+            "rgba(247, 247, 247, 0.92)"  // Purple
+    ];
+
+        // State for tips window
+    let tipColorIndex = 0;
+
+        // State for general tips window
+    let generalTipColorIndex = 0;
+
+        // Function to fetch and display a new tip
+    function fetchTips() {
+        const container = document.getElementById('tips-container');
+        const tipWindow = document.getElementById('tipWindow');
+        if (!container || !tipWindow) {
+            console.error('Tips container or window not found');
+            return;
+        }
+
+            // Apply fade effect for content
+        container.classList.add('fade');
+
+            // Update background color of the floating window
+        tipWindow.style.backgroundColor = colors[tipColorIndex];
+        tipColorIndex = (tipColorIndex + 1) % colors.length;
+
+        setTimeout(() => {
+            container.innerHTML = '<p class="loading">Loading tip...</p>';
+            fetch('/api/tips')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    container.innerHTML = '';
+                    if (data.error) {
+                        container.innerHTML = `<p class="error">${data.message}</p>`;
+                        return;
+                    }
+                    if (data.type !== 'tip') {
+                        console.warn('Unexpected item type in tips:', data);
+                        container.innerHTML = '<p class="error">Invalid tip data</p>';
+                        return;
+                    }
+                    const tipElement = document.createElement('div');
+                    tipElement.className = 'tip-item';
+                    tipElement.innerHTML = `
+                        <h3>${data.title}</h3>
+                        <p>${data.content}</p>
+                        <span class="tip-meta">Posted by ${data.author} on ${data.posted_at}</span>
+                    `;
+                    container.appendChild(tipElement);
+                    container.classList.remove('fade');
+                })
+                .catch(error => {
+                    console.error('Error fetching tip:', error);
+                    container.innerHTML = `<p class="error">Failed to load tip: ${error.message}</p>`;
+                    container.classList.remove('fade');
+                });
+        }, 300);
+    }
+
+
+        
+
+        // Function to fetch and display a new general info item
+    function fetchGeneralInfo() {
+        const container = document.getElementById('general-info-container');
+        const generalTipWindow = document.getElementById('generalTipWindow');
+        if (!container || !generalTipWindow) {
+            console.error('General info container or window not found');
+            return;
+        }
+
+            // Apply fade effect for content
+        container.classList.add('fade');
+
+            // Update background color of the floating window
+        generalTipWindow.style.backgroundColor = colors[generalTipColorIndex];
+        generalTipColorIndex = (generalTipColorIndex + 1) % colors.length;
+
+        setTimeout(() => {
+            container.innerHTML = '<p class="loading">Loading info...</p>';
+            fetch('/api/general_info')
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.message || `HTTP error! Status: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    container.innerHTML = '';
+                    if (data.error) {
+                        container.innerHTML = `<p class="error">${data.message || 'Unknown error'}</p>`;
+                        return;
+                    }
+                    if (data.type !== 'info') {
+                        console.warn('Unexpected item type in general info:', data);
+                        container.innerHTML = `<p class="error">Invalid info data</p>`;
+                        return;
+                    }
+                    const infoElement = document.createElement('div');
+                    infoElement.className = 'info-item';
+                    infoElement.innerHTML = `
+                        <h3>${data.title} (${data.category})</h3>
+                        <p>${data.content}</p>
+                        <span class="info-meta">Added on ${data.created_at}</span>
+                    `;
+                    container.appendChild(infoElement);
+                    container.classList.remove('fade');
+                })
+                .catch(error => {
+                    console.error('Error fetching general info:', error);
+                    container.innerHTML = `<p class="error">Failed to load info: ${error.message}</p>`;
+                    container.classList.remove('fade');
+                });
+        }, 300);
+    }
+
+        // Function to manage tips window cycle (60s display + 10s hide)
+    function manageTipsCycle() {
+        const tipWindow = document.getElementById('tipWindow');
+        fetchTips();
+            tipWindow.classList.add('visible'); // Fade in
+        setTimeout(() => {
+                tipWindow.classList.remove('visible'); // Fade out after 60 seconds
+        }, 60000);
+    }
+
+        // Function to manage general tips window cycle (80s display + 10s hide)
+    function manageGeneralTipsCycle() {
+        const generalTipWindow = document.getElementById('generalTipWindow');
+        fetchGeneralInfo();
+            generalTipWindow.classList.add('visible'); // Fade in
+        setTimeout(() => {
+                generalTipWindow.classList.remove('visible'); // Fade out after 80 seconds
+        }, 80000);
+    }
+
+        // Initialize cycles
+    window.onload = function() {
+        manageTipsCycle();
+        manageGeneralTipsCycle();
+            setInterval(manageTipsCycle, 70000); // 60s display + 10s hide
+            setInterval(manageGeneralTipsCycle, 90000); // 80s display + 10s hide
+    };
+
+
+
+
+
+    // Declare the updateCountdown variable globally
+        let updateCountdown;
+
+        // Function to initialize dialog functionality
+        function setupDialog() {
+            const registerButton = document.getElementById('register-button');
+            const dialog = document.getElementById('dialog');
+            const closeBtn = document.getElementById('close-btn');
+            const closeDialogBtn = document.getElementById('close-dialog-btn');
+
+            // Error checking for dialog-related DOM elements
+            if (!registerButton || !dialog || !closeBtn || !closeDialogBtn) {
+                console.error('Dialog elements not found:', { registerButton, dialog, closeBtn, closeDialogBtn });
+                return;
+            }
+
+            // Show dialog on button click (removed disabled check for now to isolate issue)
+            registerButton.addEventListener('click', () => {
+                console.log('Register button clicked');
+                dialog.classList.add('show');
+                console.log('Dialog classList after click:', dialog.classList.toString());
+            });
+
+            // Close dialog on close button click
+            closeBtn.addEventListener('click', () => {
+                dialog.classList.remove('show');
+                console.log('Dialog closed via close button');
+            });
+
+            // Close dialog when clicking the "Register for Free Demo" button
+            closeDialogBtn.addEventListener('click', () => {
+                dialog.classList.remove('show');
+                console.log('Dialog closed via Register for Free Demo button');
+            });
+        }
+
+        // Function to initialize the countdown timer
+        function startCountdown(targetDate) {
+            const countdown = document.getElementById('countdown');
+            const registerButton = document.getElementById('register-button');
+            const countDownDate = new Date(targetDate).getTime();
+
+            // Error checking for timer-related DOM elements
+            if (!countdown || !registerButton) {
+                console.error('Timer elements not found:', { countdown, registerButton });
+                return;
+            }
+
+            // Validate date
+            if (isNaN(countDownDate)) {
+                console.error('Invalid target date:', targetDate);
+                return;
+            }
+
+            // Initialize timer
+            updateCountdown = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (distance < 0) {
+                    clearInterval(updateCountdown);
+                    countdown.innerHTML = "EXPIRED";
+                    registerButton.disabled = true;
+                    registerButton.style.background = '#a5d6a7';
+                    console.log('Timer expired, button disabled');
+                } else {
+                    countdown.innerHTML = `<span>⏱</span> ${String(days).padStart(2, '0')} : ${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+                    registerButton.disabled = false;
+                    console.log('Timer ticking:', days, hours, minutes, seconds);
+                }
+            }, 1000);
+            console.log('Timer started with target:', new Date(targetDate).toISOString());
+        }
+
+        // Set target date for the event on August 23, 2027, at 03:30 PM UTC
+        const targetDate = new Date("2027-08-23T15:30:00Z").getTime();
+
+        
+        
+        // Use DOMContentLoaded to ensure DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded');
+            setupDialog();
+            startCountdown(targetDate);
+        });
+
+
+    
+
 </script>
+</body>
 
 {% endblock %}
+
 
 
 
