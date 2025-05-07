@@ -581,6 +581,80 @@ def send_vet_confirmation_email(email_receiver, vet_name):
     except Exception as e:
         app.logger.error(f"Email error: {str(e)}")
         raise
+
+
+    
+@app.route('/add_vet', methods=['GET', 'POST'])
+@login_required
+def add_vet():
+    if current_user.role != 'vet':
+        flash('Only vets can add profiles.', 'error')
+        return redirect(url_for('nearby_vets_4'))
+    
+    form = VetForm()
+    if form.validate_on_submit():
+        vet_id = f"vet_{current_user.id}_{uuid4().hex[:8]}"
+        while Vet.query.filter_by(vet_id=vet_id).first():
+            vet_id = f"vet_{current_user.id}_{uuid4().hex[:8]}"
+
+        # Compute the rating string
+        rating_score = form.rating_score.data
+        review_count = form.review_count.data
+        rating = f"{rating_score} ({review_count} reviews)"
+
+        vet = Vet(
+            vet_id=vet_id,
+            user_id=current_user.id,
+            name=form.name.data,
+            specialty=form.specialty.data,
+            clinic=form.clinic.data,
+            experience=int(form.experience.data),
+            availability=form.availability.data,
+            accepting=form.accepting.data,
+            rating=rating,  # Store computed rating
+            rating_score=rating_score,
+            review_count=review_count,
+            price=0,
+            image_url=form.image_url.data or "https://via.placeholder.com/300x150",
+            reviews=form.reviews.data or ""
+        )
+        db.session.add(vet)
+        db.session.commit()
+
+        vet_notification = Notification(
+            content=f"Vet profile added: {vet.name}",
+            category='vet_added',
+            user_id=current_user.id
+        )
+        db.session.add(vet_notification)
+
+        other_users = User.query.filter(User.id != current_user.id).all()
+        for user in other_users:
+            user_notification = Notification(
+                content=f"New vet added: {vet.name}",
+                category='new_vet',
+                user_id=user.id
+            )
+            db.session.add(user_notification)
+            try:
+                send_vet_confirmation_email(user.email, vet.name, user.username)
+            except Exception as e:
+                app.logger.error(f"Failed to send new vet notification to {user.email}: {str(e)}")
+
+        db.session.commit()
+
+        try:
+            send_vet_confirmation_email(form.email.data, vet.name)
+        except Exception as e:
+            app.logger.error(f"Failed to send vet confirmation email to {form.email.data}: {str(e)}")
+            flash('Vet profile added successfully, but failed to send confirmation email.', 'warning')
+        else:
+            flash('Vet profile added successfully! A confirmation email has been sent.', 'success')
+
+        return redirect(url_for('nearby_vets'))
+    
+    return render_template('add_vet.html', form=form)
+    
     
 
     
