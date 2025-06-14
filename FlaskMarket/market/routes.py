@@ -695,8 +695,27 @@ def list_vets(page):
     return render_template('nearby-vets-4.html', vets=vets, current_user=current_user)
 
 
-    
-    
+
+# Define synonyms for animal types
+ANIMAL_SYNONYMS = {
+    'cow': ['cow', 'cattle', 'calf', 'bovine'],
+    'cattle': ['cow', 'cattle', 'calf', 'bovine'],
+    'calf': ['cow', 'cattle', 'calf', 'bovine'],
+    'bovine': ['cow', 'cattle', 'calf', 'bovine'],
+    'goat': ['goat', 'kid'],
+    'sheep': ['sheep', 'lamb', 'ewe'],
+    'pig': ['pig', 'swine', 'hog', 'boar', 'sow'],
+    'swine': ['pig', 'swine', 'hog', 'boar', 'sow'],
+    'chicken': ['chicken', 'poultry', 'hen', 'rooster'],
+    'poultry': ['chicken', 'poultry', 'hen', 'rooster'],
+    'horse': ['horse', 'mare', 'stallion', 'foal'],
+    'donkey': ['donkey', 'ass', 'mule'],
+    'cat': ['cat', 'kitten', 'feline'],
+    'dog': ['dog', 'puppy', 'canine'],
+    'rabbit': ['rabbit', 'bunny'],
+    'camel': ['camel', 'dromedary', 'bactrian']
+}
+
     
 
     
