@@ -716,6 +716,24 @@ ANIMAL_SYNONYMS = {
     'camel': ['camel', 'dromedary', 'bactrian']
 }
 
-    
+
+# Predefined symptom synonyms (from previous implementation)
+SYMPTOM_SYNONYMS = {
+    "high temperature": "fever",
+    "elevated temperature": "fever",
+    "coughing": "cough",
+    "runny nose": "nasal discharge",
+    "sneezing": "nasal discharge",
+    "tiredness": "lethargy",
+    "weakness": "lethargy",
+    "breathing difficulty": "respiratory distress",
+    "lameness": "limping",
+    "rapid breathing": "respiratory distress",
+    "weight loss": "emaciation",
+    "swollen udder": "painful udder",
+    "milk clots": "reduced milk yield",
+    "redness of udder": "painful udder"
+}
+
 
     
