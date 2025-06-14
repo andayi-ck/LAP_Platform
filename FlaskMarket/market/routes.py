@@ -685,6 +685,16 @@ def edit_vet(vet_id):
         return redirect(url_for('list_vets'))
 
     return render_template('edit_vet.html', form=form, vet=vet)
+
+
+@app.route('/list_vets', defaults={'page': 1})
+@app.route('/list_vets/<int:page>')
+def list_vets(page):
+    per_page = 6
+    vets = Vet.query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template('nearby-vets-4.html', vets=vets, current_user=current_user)
+
+
     
     
     
