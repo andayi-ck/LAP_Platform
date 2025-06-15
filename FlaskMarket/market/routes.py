@@ -820,8 +820,37 @@ def search_symptoms():
     except Exception as e:
         print(f"Exception occurred: {str(e)}")
         return jsonify({'error': f'Server error: {str(e)}'}), 500
-    
-                    
+
+@app.route('/search_vets', methods=['POST'])
+def search_vets():
+    data = request.get_json()
+    vet_name = data.get('vetName', '').lower()
+    specialty = data.get('specialty', '').lower()
+    clinic = data.get('clinic', '').lower()
+    animal_type = data.get('animalType', '').lower()
+
+    # Build the query
+    query = Vet.query
+
+    # Filter by vet name
+    if vet_name:
+        query = query.filter(Vet.name.ilike(f'%{vet_name}%'))
+
+    # Filter by specialty (disease expertise)
+    if specialty:
+        # Remove common suffixes like "expert" or "specialist" for broader matching
+        specialty_keywords = [specialty]
+        for suffix in ['expert', 'specialist']:
+            if specialty.endswith(suffix):
+                specialty_keywords.append(specialty.replace(suffix, '').strip())
+        # Search for any of the keywords in the specialty field
+        specialty_conditions = [Vet.specialty.ilike(f'%{keyword}%') for keyword in specialty_keywords]
+        query = query.filter(or_(*specialty_conditions))
+
+    # Filter by clinic (locality)
+    if clinic:
+        query = query.filter(Vet.clinic.ilike(f'%{clinic}%'))
+
 
 
                     
