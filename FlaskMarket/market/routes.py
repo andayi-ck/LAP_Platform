@@ -851,6 +851,47 @@ def search_vets():
     if clinic:
         query = query.filter(Vet.clinic.ilike(f'%{clinic}%'))
 
+    # Filter by animal type (specific animal or category)
+    if animal_type:
+        # Map animals to categories and keywords
+        animal_category_map = {
+            'dog': ['dog', 'small animals', 'mammal'],
+            'cat': ['cat', 'small animals', 'mammal'],
+            'cow': ['cow', 'large animals', 'mammal'],
+            'horse': ['horse', 'large animals', 'mammal'],
+            'pig': ['pig', 'large animals', 'mammal'],
+            'goat': ['goat', 'large animals', 'mammal'],
+            'sheep': ['sheep', 'large animals', 'mammal'],
+            'parrot': ['parrot', 'avian', 'bird'],
+            'chicken': ['chicken', 'avian', 'bird'],
+            'rabbit': ['rabbit', 'small animals', 'mammal'],
+            'hamster': ['hamster', 'small animals', 'mammal']
+        }
+
+        # Get the list of keywords to search for in specialty
+        search_keywords = animal_category_map.get(animal_type, [animal_type])
+        animal_conditions = [Vet.specialty.ilike(f'%{keyword}%') for keyword in search_keywords]
+        query = query.filter(or_(*animal_conditions))
+
+    vets = query.all()
+
+    # Convert vets to a JSON-serializable format
+    vet_list = [{
+        'id': vet.id,
+        'name': vet.name,
+        'specialty': vet.specialty,
+        'clinic': vet.clinic,
+        'experience': vet.experience,
+        'availability': vet.availability,
+        'accepting': vet.accepting,
+        'rating': vet.rating,
+        'price': vet.price,
+        'image_url': vet.image_url
+    } for vet in vets]
+
+    return jsonify({'vets': vet_list})
+
+
 
 
                     
