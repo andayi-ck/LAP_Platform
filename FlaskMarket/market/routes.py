@@ -892,6 +892,28 @@ def search_vets():
     return jsonify({'vets': vet_list})
 
 
+@app.route('/admin/create_event', methods=['GET', 'POST'])
+@login_required
+def create_event():
+    if current_user.role != 'admin':
+        flash('Unauthorized access. Only admins can create events.', 'error')
+        return redirect(url_for('home_page'))
+    
+    form = CreateEventForm()
+    if form.validate_on_submit():
+        event_date = datetime.combine(form.event_date.data, time(0, 0))
+        new_event = Event(
+            title=form.title.data,
+            content=form.content.data,
+            event_date=event_date
+        )
+        db.session.add(new_event)
+        db.session.commit()
+        flash('Event created successfully!', 'success')
+        return redirect(url_for('home_page'))
+    
+    return render_template('create_event.html', form=form)
+
 
 
                     
