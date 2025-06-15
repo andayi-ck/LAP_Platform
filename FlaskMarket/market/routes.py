@@ -789,6 +789,47 @@ def search_symptoms():
                 if not disease_symptoms:
                     print(f"No symptoms found for disease: {disease.name}")
                     continue
+                # Simple string-based matching for symptoms
+                matching_symptom_count = 0
+                matched_symptoms = set()
+                for input_symptom in normalized_symptoms:
+                    for db_symptom in disease_symptoms:
+                        if input_symptom in db_symptom or db_symptom in input_symptom:
+                            matching_symptom_count += 1
+                            matched_symptoms.add(input_symptom)
+                            print(f"Symptom match: {input_symptom} matches {db_symptom}")
+                            break
+                
+                if matching_symptom_count > 0:
+                    matching_diseases.append({
+                        'name': disease.name,
+                        'animal_type': disease.animal_type,
+                        'matching_symptoms': matching_symptom_count,
+                        'action_to_take': disease.action_to_take  # Include action_to_take
+                    })
+                    print(f"Added disease: {disease.name} with {matching_symptom_count} matching symptoms")
+
+        # Sort by number of matching symptoms and limit to top 3
+        matching_diseases.sort(key=lambda x: x['matching_symptoms'], reverse=True)
+        matching_diseases = matching_diseases[:3]
+        print(f"Matching diseases: {matching_diseases}")
+
+        if not matching_diseases:
+            return jsonify({'error': 'No matching diseases found for the given symptoms.'}), 404
+        return jsonify({'diseases': matching_diseases})
+    except Exception as e:
+        print(f"Exception occurred: {str(e)}")
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
+    
+                    
+
+
+                    
+
+
+                
+
+            
 
                 
 
