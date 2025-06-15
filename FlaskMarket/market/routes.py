@@ -735,5 +735,62 @@ SYMPTOM_SYNONYMS = {
     "redness of udder": "painful udder"
 }
 
+@app.route('/search_symptoms', methods=['POST'])
+def search_symptoms():
+    try:
+        # Parse input
+        data = request.get_json()
+        animal_name = data.get('animal_name', '').strip().lower()
+        raw_symptoms = data.get('symptoms', '').strip().lower().split(',')[:7]
+        symptoms = []
+        for symptom in raw_symptoms:
+            sub_symptoms = [s.strip() for s in symptom.replace(' and ', ',').split(',')]
+            symptoms.extend(sub_symptoms)
+        symptoms = [s for s in symptoms if s]
+        if not animal_name or not symptoms:
+            return jsonify({'error': 'Please provide both animal name and symptoms.'}), 400
+
+        print(f"Input - Animal: {animal_name}, Symptoms: {symptoms}")
+
+        # Normalize animal name using synonyms
+        animal_synonyms = []
+        for key, synonyms in ANIMAL_SYNONYMS.items():
+            if animal_name in synonyms:
+                animal_synonyms.extend(synonyms)
+                animal_name = key  # Standardize to the key (e.g., "cow" -> "cattle")
+                break
+        if not animal_synonyms:
+            animal_synonyms = [animal_name]
+        print(f"Animal synonyms: {animal_synonyms}")
+
+        # Normalize symptoms using synonyms
+        normalized_symptoms = []
+        for symptom in symptoms:
+            normalized_symptom = SYMPTOM_SYNONYMS.get(symptom, symptom)
+            normalized_symptoms.append(normalized_symptom)
+        print(f"Normalized symptoms: {normalized_symptoms}")
+
+        # Fetch diseases from the database
+        diseases = SymptomCheckerDisease.query.all()
+        print(f"Total diseases queried: {len(diseases)}")
+
+        # Match diseases based on animal type and symptoms
+        matching_diseases = []
+        for disease in diseases:
+            print(f"Checking disease: {disease.name}, Animal Type: {disease.animal_type}, Symptoms: {disease.symptoms}")
+            
+            # Check if any synonym matches the animal type
+            animal_type_lower = disease.animal_type.lower()
+            if any(synonym in animal_type_lower for synonym in animal_synonyms):
+                print(f"Animal match: {animal_name} (via {animal_synonyms}) found in {animal_type_lower}")
+                
+                # Parse disease symptoms
+                disease_symptoms = [s.strip().lower() for s in disease.symptoms.split(',')]
+                if not disease_symptoms:
+                    print(f"No symptoms found for disease: {disease.name}")
+                    continue
+
+                
+
 
     
