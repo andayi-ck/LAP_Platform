@@ -974,6 +974,47 @@ def animal_search_results():
         {"age_range": p.age_range, "product_type": p.product_type, "expected_amount": p.expected_amount}
         for p in produces
     ]
+    grouped_results = {}
+    for table_data, key in [
+        (feeds, 'feeds'), (vaccines, 'vaccines'),
+        (diseases, 'diseases_infection'),
+        (feed_intakes, 'feed_intakes'), (produces, 'produces')
+    ]:
+        for row in table_data:
+            age = row.age_range or 'Unknown'
+            if age not in grouped_results:
+                grouped_results[age] = {
+                    'species_name': species.name if species else 'Not Available',
+                    'habitat': habitat.preferred_conditions if habitat else 'Not Available',
+                    'temperature_range': habitat.temperature_range if habitat else 'Not Available',
+                    'feeds': [], 'vaccines': [],
+                    'diseases_infection': [],
+                    'feed_intakes': [], 'produces': []
+                }
+            if key == 'feeds':
+                grouped_results[age]['feeds'].append({'feed_type': row.feed_type, 'quantity_per_day': row.quantity_per_day})
+            elif key == 'vaccines':
+                grouped_results[age]['vaccines'].append(row.vaccine_name)
+            elif key == 'diseases_infection':
+                grouped_results[age]['diseases_infection'].append(row.disease_name)
+            elif key == 'feed_intakes':
+                grouped_results[age]['feed_intakes'].append(row.expected_intake)
+            elif key == 'produces':
+                grouped_results[age]['produces'].append({'product_type': row.product_type, 'expected_amount': row.expected_amount})
+
+    if not grouped_results:
+        return render_template('analytics_dashboard.html', error=f"No detailed data found for {query}.", animal=query)
+
+    return render_template(
+        'analytics_dashboard.html',
+        grouped_results=grouped_results,
+        animal=query,
+        feeds_chart_data=feeds_chart_data,
+        vaccination_chart_data=vaccination_chart_data,
+        diseases_chart_data=diseases_infection_chart_data,
+        feed_intake_chart_data=feed_intake_chart_data,
+        produce_chart_data=produce_chart_data
+    )
 
 
 
