@@ -928,6 +928,55 @@ def unsubscribe(email):
 
 
 
+@app.route('/analytics_dashboard')
+def analytics_dashboard():
+    return render_template('analytics_dashboard.html')
+
+
+@app.route('/animal_search_results', methods=['GET'])
+def animal_search_results():
+    query = request.args.get('animal', '').strip()
+
+    if not query:
+        return render_template('analytics_dashboard.html', error="Please enter an animal name.")
+
+    animal = Animalia.query.filter(db.func.lower(Animalia.name) == query.lower()).first()
+    if not animal:
+        return render_template('analytics_dashboard.html', error=f"No data found for {query}.", animal=query)
+    animal_id = animal.id
+
+    species = Specificia.query.filter_by(animal_id=animal_id).first()
+    habitat = Habitatty.query.filter_by(animal_id=animal_id).first()
+
+    feeds = AnimalsFeed.query.filter_by(animal_id=animal_id).all()
+    vaccines = VaccinationTimetable.query.filter_by(animal_id=animal_id).all()
+    diseases = DiseasesInfection.query.filter_by(animal_id=animal_id).all()
+    feed_intakes = ExpectedFeedIntake.query.filter_by(animal_id=animal_id).all()
+    produces = ExpectedProduce.query.filter_by(animal_id=animal_id).all()
+
+    feeds_chart_data = [
+        {"age_range": f.age_range, "feed_type": f.feed_type, "quantity_per_day": f.quantity_per_day}
+        for f in feeds
+    ]
+    vaccination_chart_data = [
+        {"age_range": v.age_range, "vaccine_name": v.vaccine_name}
+        for v in vaccines
+    ]
+    diseases_infection_chart_data = [
+        {"age_range": d.age_range, "disease_name": d.disease_name}
+        for d in diseases
+    ]
+    feed_intake_chart_data = [
+        {"age_range": fi.age_range, "expected_intake": fi.expected_intake}
+        for fi in feed_intakes
+    ]
+    produce_chart_data = [
+        {"age_range": p.age_range, "product_type": p.product_type, "expected_amount": p.expected_amount}
+        for p in produces
+    ]
+
+
+
                     
 
 
