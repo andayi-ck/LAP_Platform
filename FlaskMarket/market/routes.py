@@ -915,6 +915,18 @@ def create_event():
     return render_template('create_event.html', form=form)
 
 
+@app.route('/unsubscribe/<email>')
+def unsubscribe(email):
+    user = User.query.filter_by(email_address=email).first()
+    if user and user.role == 'subscriber':
+        db.session.delete(user)
+        db.session.commit()
+        flash('You have been unsubscribed successfully.', 'success')
+    else:
+        flash('Email not found or not a subscriber.', 'error')
+    return redirect(url_for('home_page'))
+
+
 
                     
 
