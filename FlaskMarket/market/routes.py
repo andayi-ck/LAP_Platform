@@ -1042,6 +1042,32 @@ def dashboard():
         total_produce_data=total_produce_data
     )
 
+@app.route('/api/chart_data/<animal>/<chart_type>/<age_range>', methods=['GET'])
+def get_chart_data(animal, chart_type, age_range):
+    animal = Animalia.query.filter(db.func.lower(Animalia.name) == animal.lower()).first()
+    if not animal:
+        return {"error": "Animal not found"}, 404
+    animal_id = animal.id
+
+    if chart_type == "feeds":
+        data = AnimalsFeed.query.filter_by(animal_id=animal_id, age_range=age_range).all()
+        chart_data = [{"age_range": d.age_range, "feed_type": d.feed_type, "quantity_per_day": d.quantity_per_day} for d in data]
+    elif chart_type == "vaccines":
+        data = VaccinationTimetable.query.filter_by(animal_id=animal_id, age_range=age_range).all()
+        chart_data = [{"age_range": d.age_range, "vaccine_name": d.vaccine_name} for d in data]
+    elif chart_type == "diseases":
+        data = DiseasesInfection.query.filter_by(animal_id=animal_id, age_range=age_range).all()
+        chart_data = [{"age_range": d.age_range, "disease_name": d.disease_name} for d in data]
+    elif chart_type == "feed_intake":
+        data = ExpectedFeedIntake.query.filter_by(animal_id=animal_id, age_range=age_range).all()
+        chart_data = [{"age_range": d.age_range, "expected_intake": d.expected_intake} for d in data]
+    elif chart_type == "produce":
+        data = ExpectedProduce.query.filter_by(animal_id=animal_id, age_range=age_range).all()
+        chart_data = [{"age_range": d.age_range, "product_type": d.product_type, "expected_amount": d.expected_amount} for d in data]
+    else:
+        return {"error": "Invalid chart type"}, 400
+
+    return chart_data
 
                     
 
