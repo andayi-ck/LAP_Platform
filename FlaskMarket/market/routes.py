@@ -1017,6 +1017,31 @@ def animal_search_results():
     )
 
 
+@app.route('/dashboard')
+def dashboard():
+    # Fetch all animals
+    animals = Animalia.query.all()
+    total_feed_intake_data = []
+    total_produce_data = []
+
+    for animal in animals:
+        animal_id = animal.id
+        # Aggregate feed intake
+        feed_intakes = ExpectedFeedIntake.query.filter_by(animal_id=animal_id).all()
+        total_feed = sum(fi.expected_intake for fi in feed_intakes)
+        total_feed_intake_data.append({"animal": animal.name, "total_feed": total_feed})
+
+        # Aggregate produce
+        produces = ExpectedProduce.query.filter_by(animal_id=animal_id).all()
+        total_produce = sum(p.expected_amount for p in produces)
+        total_produce_data.append({"animal": animal.name, "total_produce": total_produce})
+
+    return render_template(
+        'dashboard.html',
+        total_feed_intake_data=total_feed_intake_data,
+        total_produce_data=total_produce_data
+    )
+
 
                     
 
